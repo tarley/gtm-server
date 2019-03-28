@@ -1,0 +1,50 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "",
+      "description": "",
+      "version": "1.0"
+    },
+    "produces": ["application/json"],
+    "host": "localhost:3000",
+    "basePath": "/api/v1",
+    "paths": {
+      "/fazendas": {
+        "get": {
+          "x-swagger-router-controller": "FazendaController",
+          "operationId": "getFazendas",
+          "tags": ["/fazendas"],
+          "description": "Consulta informações de fazendas",
+          "parameters": [],
+          "responses": {
+                "200": {"description": "Sucesso"}
+          }
+        }
+      },
+      "/fazendas/{id}": {
+        "get": {
+            "x-swagger-router-controller": "FazendaController",
+            "operationId": "getFazendasPorId",
+            "tags": ["/fazendas"],
+            "description": "Consulta informações de fazendas por ID",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "description": "Código [id_pk] da fazenda",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "format": "int64"
+                    }
+                }
+            ],
+            "responses": {
+                  "200": {"description": "Sucesso"},
+                  "400": {"description": "Not Found"}
+            }
+        }
+      }
+    }
+ }

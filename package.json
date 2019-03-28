@@ -5,13 +5,16 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "nodemon ./app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "express-validator": "^5.3.1",
     "mongoose": "^5.4.19",
+    "swagger-ui-express": "^4.0.2",
     "validator": "^10.11.0"
   },
   "devDependencies": {
