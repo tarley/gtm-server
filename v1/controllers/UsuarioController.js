@@ -72,8 +72,29 @@ class UsuarioController {
         }
     }
 
-    alterar(req, res) {
-        res.send('alterar');
+    async alterar(req, res) {
+        try {
+            const erros = validationResult(req);
+
+            if(!erros.isEmpty())
+                return res.status(422).json({errors: erros.array()});
+
+            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+
+            const usuario = {
+                ...req.body
+            }
+
+            const id = mongoose.Types.ObjectId(req.params.id);
+            const result = await Usuario.updateOne({_id: id}, usuario);
+
+            if(result.n == 0)
+                return res.status(404).json(result); 
+
+            res.json(result);
+        } catch(err) {
+            res.status(500).json(err);
+        }
     }
 
     validarPerfil(value) {
