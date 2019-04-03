@@ -7,9 +7,10 @@ const {check} = require('express-validator/check');
 router.route('/')
     .get(controller.consultar)
     .post(
-        [
-            check('nome').isLength({ min: 8}),
-            check('cpf').isLength({min: 11, max: 11}),
-        ], controller.inserir);
+        // [
+        //     check('nome').isLength({ min: 8}),
+        //     check('cpf').isLength({min: 11, max: 11}),
+        // ], 
+        controller.inserir);
 
 exports.default = router;

@@ -2,13 +2,13 @@ const mongoose = require('mongoose')
 
 const pacienteSchema = new mongoose.Schema({
     nome: String,
-    cpf: Number,
+    cpf: String,
     sexo: String,
-    dataNascimento: String,
-    estadoCivil: String,
-    anosEstudo: Number,
-    telefone: Number,
-    profissao: String,
+    // dataNascimento: String,
+    // estadoCivil: String,
+    // anosEstudo: Number,
+    // telefone: Number,
+    // profissao: String,
 
     // dadosComplementares: {
     //     profissionalServico: String,
