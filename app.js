@@ -1,5 +1,6 @@
 const express = require('express');
 const rotasV1Usuarios = require('./v1/routes/UsuarioRoute');
+const rotasV1Pacientes = require('./v1/routes/PacienteRoute')
 
 const app = express();
 
@@ -24,6 +25,10 @@ app.use('/api-docs', swagger.serve, swagger.setup(swaggerDocs));
  */
 app.use('/api/v1/usuarios/', rotasV1Usuarios.default);
 
+/*
+ * Configura rotas de paciente
+ */
+ app.use('/api/v1/pacientes', rotasV1Pacientes.default);
 
 const port = process.env.PORT || 3000;
 
