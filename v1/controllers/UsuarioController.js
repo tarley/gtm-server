@@ -73,7 +73,21 @@ class UsuarioController {
     }
 
     alterar(req, res) {
-        res.send('alterar');
+        try {
+            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            
+            Usuario.updateOne({_id: mongoose.Types.ObjectId(req.params.id)}, req.body, (err, result) => {
+                if(err)
+                    return res.status(500).json({errors: [{...err}]});
+                
+                if(result.nModified == 0)
+                   return res.status(404).json(result); 
+
+                return res.json(result);
+            });
+        } catch(err) {
+            res.status(500).json(err);
+        }
     }
 
     validarPerfil(value) {
