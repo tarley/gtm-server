@@ -9,7 +9,7 @@ router.route('/')
     .post(
         [
             check('nome').isLength({ min: 5 }),
-            check('email').isEmail(),
+            check('email').isEmail().custom((value) => controller.emailJaExiste(value)),
             check('senha').isLength({ min: 5 }),
             check('perfil').custom((value) => controller.validarPerfil(value))
         ], 
@@ -21,7 +21,7 @@ router.route('/:id')
     .put(
         [
             check('nome').isLength({ min: 5 }),
-            check('email').isEmail(),
+            check('email').isEmail().custom((value) => controller.emailJaExiste(value)),
             check('senha').isLength({ min: 5 }),
             check('perfil').custom((value) => controller.validarPerfil(value))
         ],
