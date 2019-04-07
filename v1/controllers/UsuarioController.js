@@ -46,7 +46,6 @@ class UsuarioController {
             let newUsuario = new Usuario({
                 ...req.body
             })
-
             newUsuario = await newUsuario.save();
             res.json(newUsuario);
         } catch(err) {
@@ -90,11 +89,27 @@ class UsuarioController {
         }
     }
 
+    
+    async emailJaExiste(email) {
+        try {
+            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            
+            const usuario = await Usuario.findOne({email: email}).exec();
+            if(usuario) {
+                throw new Error('E-mail já existe'); 
+            } else {
+                return true;
+            }
+
+        } catch(err) {
+            throw new Error('E-mail já existe');
+        }
+    }
+
     validarPerfil(value) {
         if (value !== "Administrador")
-            //return Promise.reject('E-mail already in use');
-            throw new Error('Perfil inválido');
-        
+            throw new Error('Perfil inválido');   
+
         return true;
     }
 }
