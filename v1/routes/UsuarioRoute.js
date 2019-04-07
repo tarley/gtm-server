@@ -1,6 +1,7 @@
 const controller = require('../controllers/UsuarioController.js');
 const express = require('express');
 const router = express.Router();
+const mensagens = require('../utils/Mensagens');
 
 const {check} = require('express-validator/check');
 
@@ -8,10 +9,10 @@ router.route('/')
     .get(controller.consultar)
     .post(
         [
-            check('nome').isLength({ min: 5 }),
-            check('email').isEmail().custom((value) => controller.emailJaExiste(value)),
-            check('senha').isLength({ min: 5 }),
-            check('perfil').custom((value) => controller.validarPerfil(value))
+            check('nome', mensagens.TAM_MIN_NOME_USUARIO).isLength({ min: 5 }),
+            check('email', mensagens.EMAIL_JA_EXISTE).isEmail().custom((value) => controller.emailJaExiste(value)),
+            check('senha', mensagens.TAM_MIN_SENHA_USUARIO).isLength({ min: 5 }),
+            check('perfil', mensagens.PERFIL_INVALIDO_USUARIO).custom((value) => controller.validarPerfil(value))
         ], 
         controller.inserir);
 
@@ -20,10 +21,10 @@ router.route('/:id')
     .delete(controller.excluir)
     .put(
         [
-            check('nome').isLength({ min: 5 }),
-            check('email').isEmail().custom((value) => controller.emailJaExiste(value)),
-            check('senha').isLength({ min: 5 }),
-            check('perfil').custom((value) => controller.validarPerfil(value))
+            check('nome', mensagens.TAM_MIN_NOME_USUARIO).isLength({ min: 5 }),
+            check('email', mensagens.EMAIL_JA_EXISTE).isEmail().custom((value) => controller.emailJaExiste(value)),
+            check('senha', mensagens.TAM_MIN_SENHA_USUARIO).isLength({ min: 5 }),
+            check('perfil', mensagens.PERFIL_INVALIDO_USUARIO).custom((value) => controller.validarPerfil(value))
         ],
         controller.alterar);
 

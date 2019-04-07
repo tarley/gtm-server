@@ -13,4 +13,7 @@ router.route('/')
         // ], 
         controller.inserir);
 
+router.route('/:id')
+    .get(controller.consultarPorId);
+
 exports.default = router;
