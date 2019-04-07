@@ -6,7 +6,9 @@ const {check} = require('express-validator/check');
 
 router.route('/')
     .get(controller.consultar)
-    .post(controller.inserir);
+    .post([
+        check('descricao').isLength({ min: 3})
+    ], controller.inserir);
 
 router.route('/:id')
     .delete(controller.excluir)
