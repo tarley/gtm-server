@@ -8,4 +8,7 @@ router.route('/')
     .get(controller.consultar)
     .post(controller.inserir);
 
+router.route('/:id')
+    .delete(controller.excluir)
+    
 exports.default = router;
