@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const medicamentoSchema = new mongoose.Schema({
+    _id: String,
     descricao: String,
 })
 

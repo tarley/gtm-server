@@ -47,6 +47,24 @@ class MedicamentoController {
             res.status(500).json(err);
         }
     }
+
+    excluir(req, res) {
+        try {
+            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            
+            Medicamento.deleteOne({_id: mongoose.Types.ObjectId(req.params.id)}, (err, result) => {
+                if(err)
+                    return res.status(500).json({errors: [{...err}]});
+                
+                if(result.deletedCount == 0)
+                   return res.status(404).json(result); 
+
+                return res.json(result);
+            });
+        } catch(err) {
+            res.status(500).json(err);
+        }
+    }
 }
 
 module.exports = new MedicamentoController();
