@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mensagens = require('../utils/Mensagens');
 const {
     validationResult
 } = require('express-validator/check');
@@ -20,6 +21,22 @@ class PacienteController {
             const pacientes = await query.exec();
             res.json(pacientes);
         } catch (err) {
+            res.status(500).json(err);
+        }
+    }
+
+    async consultarPorId(req, res) {
+        try {
+            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            
+            const query = Paciente.findById(req.params.id);
+            const paciente = await query.exec();
+
+            if(paciente)
+                res.json(paciente);
+            else
+                res.status(404).json({errors: [{msg: mensagens.PACIENTE_NAO_ENCONTRADO}]});
+        } catch(err) {
             res.status(500).json(err);
         }
     }
