@@ -76,7 +76,9 @@ class PacienteController {
                     return res.status(500).json({ errors: [{ ...err }] });
 
                 if (result.deletedCount == 0)
-                    return res.json(result);
+                    return res.status(404).json(result);
+
+                return res.json(result);
             });
 
         } catch (err) {
