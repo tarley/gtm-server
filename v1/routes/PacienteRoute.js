@@ -15,6 +15,8 @@ router.route('/')
         controller.inserir);
 
 router.route('/:id')
-    .get(controller.consultarPorId);
+    .get(controller.consultarPorId)
+    .delete(controller.exluir)
+    .put(controller.alterar)
 
 exports.default = router;
