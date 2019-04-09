@@ -12,6 +12,12 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
 
 /*
+ * Configura a pasta public
+ */
+const path = require("path");
+app.use(express.static(path.join(__dirname, 'public')));
+
+/*
  * Configura o Swagger
  */
 const swagger = require('swagger-ui-express');
