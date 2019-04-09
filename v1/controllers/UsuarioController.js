@@ -3,6 +3,7 @@ const {validationResult} = require('express-validator/check');
 
 const {URL_MONGO_DB} = require('../utils/Constantes');
 const Usuario = require('../models/Usuario');
+const mensagens = require('../utils/Mensagens');
 
 class UsuarioController {
 
@@ -28,7 +29,7 @@ class UsuarioController {
             if(usuario)
                 res.json(usuario);
             else
-                res.status(404).json({errors: [{msg: "Usuario não encontrado"}]});
+                res.status(404).json({errors: [{msg: mensagens.USUARIO_NAO_ENCONTRADO}]});
         } catch(err) {
             res.status(500).json(err);
         }
@@ -46,7 +47,6 @@ class UsuarioController {
             let newUsuario = new Usuario({
                 ...req.body
             })
-
             newUsuario = await newUsuario.save();
             res.json(newUsuario);
         } catch(err) {
@@ -97,11 +97,27 @@ class UsuarioController {
         }
     }
 
+    
+    async emailJaExiste(email) {
+        try {
+            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            
+            const usuario = await Usuario.findOne({email: email}).exec();
+            if(usuario) {
+                throw new Error(mensagens.EMAIL_JA_EXISTE); 
+            } else {
+                return true;
+            }
+
+        } catch(err) {
+            throw new Error(mensagens.EMAIL_JA_EXISTE);
+        }
+    }
+
     validarPerfil(value) {
         if (value !== "Administrador")
-            //return Promise.reject('E-mail already in use');
-            throw new Error('Perfil inválido');
-        
+            throw new Error(mensagens.PERFIL_INVALIDO_USUARIO);   
+
         return true;
     }
 }
