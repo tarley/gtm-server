@@ -9,4 +9,7 @@ module.exports = {
 
     //Mensagens Paciente
     PACIENTE_NAO_ENCONTRADO: 'Paciente não encontrado!',
+
+    //Mensagens Atendimento
+    ATENDIMENTO_NAO_ENCONTRADO: 'Atendimento não encontrado!',
 }
