@@ -13,6 +13,10 @@ const pacienteSchema = new mongoose.Schema({
     dadosComplementares: {
         profissionalServico: String,
         lugarAtendimento: String,
+        endereco: String,
+        ubs: String,
+        acessoServico: String,
+        motivoConsulta: String
     },
 
     habitosVida: {
@@ -29,7 +33,25 @@ const pacienteSchema = new mongoose.Schema({
             consume: Boolean,
             observacao: String
         }        
+    },
+
+    dadosAntropometricos: {
+        peso: String,
+        altura: Number,
+        imc: String
+    },
+    
+    rotina: {
+        acorda: String,
+        cafedaManha: String,
+        lanchedaManha: String,
+        almoco: String,
+        lanchedaTarde: String,
+        jantar: String,
+        dorme: String,
+        observacaoRotina: String
     }
+
 })
 
 module.exports = mongoose.model('Paciente', pacienteSchema)
