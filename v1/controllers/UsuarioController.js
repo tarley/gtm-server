@@ -72,19 +72,26 @@ class UsuarioController {
         }
     }
 
-    alterar(req, res) {
+    async alterar(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
-            
-            Usuario.updateOne({_id: mongoose.Types.ObjectId(req.params.id)}, req.body, (err, result) => {
-                if(err)
-                    return res.status(500).json({errors: [{...err}]});
-                
-                if(result.nModified == 0)
-                   return res.status(404).json(result); 
+            const erros = validationResult(req);
 
-                return res.json(result);
-            });
+            if(!erros.isEmpty())
+                return res.status(422).json({errors: erros.array()});
+
+            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+
+            const usuario = {
+                ...req.body
+            }
+
+            const id = mongoose.Types.ObjectId(req.params.id);
+            const result = await Usuario.updateOne({_id: id}, usuario);
+
+            if(result.n == 0)
+                return res.status(404).json(result); 
+
+            res.json(result);
         } catch(err) {
             res.status(500).json(err);
         }
@@ -108,7 +115,7 @@ class UsuarioController {
     }
 
     validarPerfil(value) {
-        if (value !== "Administrador")
+        if (value !== "Administrador" && value !== "Normal")
             throw new Error(mensagens.PERFIL_INVALIDO_USUARIO);   
 
         return true;
