@@ -2,8 +2,10 @@ const mongoose = require('mongoose')
 
 const atendimentoSchema = new mongoose.Schema({
         idPaciente: String,
+        nomePaciente: String,
         dataAtendimento: Date,
         quadroGeral: String,
+        dataResultado: Date,
         doencas: [{
             nome: String,
             descricao: String,
@@ -14,18 +16,18 @@ const atendimentoSchema = new mongoose.Schema({
                 tempoUso: String,
                 seguranca: String,
                 dificuldadeUso: String,
+                prm : String,
+                causaPrm: String,
+                conduta: String,
             }],
         }],
         planoCuidado: {
             objetivoTerapeutico: String,
-            prm : String,
-            causaPrm: String,
             condutas: {
                 medicamento: String,
                 conduta: String,
             },
             scf: String,
-            dataResultado: Date,
             outrasCondutas: String
         }
 })
