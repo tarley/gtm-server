@@ -11,7 +11,6 @@ router.route('/')
         [
             check('nome', mensagens.TAM_MIN_NOME_USUARIO).isLength({ min: 5 }),
             check('email', mensagens.EMAIL_INVALIDO).isEmail(),
-            check('email', mensagens.EMAIL_JA_EXISTE).custom((value) => controller.emailJaExiste(value)),
             check('senha', mensagens.TAM_MIN_SENHA_USUARIO).isLength({ min: 5 }),
             check('perfil', mensagens.PERFIL_INVALIDO_USUARIO).custom((value) => controller.validarPerfil(value))
         ], 
@@ -24,7 +23,6 @@ router.route('/:id')
         [
             check('nome', mensagens.TAM_MIN_NOME_USUARIO).isLength({ min: 5 }),
             check('email', mensagens.EMAIL_INVALIDO).isEmail(),
-            check('email', mensagens.EMAIL_JA_EXISTE).custom((value) => controller.emailJaExiste(value)),
             check('senha', mensagens.TAM_MIN_SENHA_USUARIO).isLength({ min: 5 }),
             check('perfil', mensagens.PERFIL_INVALIDO_USUARIO).custom((value) => controller.validarPerfil(value))
         ],
