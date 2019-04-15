@@ -2,6 +2,7 @@ const express = require('express');
 const rotasV1Usuarios = require('./v1/routes/UsuarioRoute');
 const rotasV1Pacientes = require('./v1/routes/PacienteRoute');
 const rotasV1Medicamentos = require('./v1/routes/MedicamentoRoute');
+const rotasV1Atendimentos = require('./v1/routes/AtendimentoRoute');
 const rotasV1Profissoes = require('./v1/routes/ProfissaoRoute');
 
 const app = express();
@@ -43,6 +44,10 @@ app.use('/api/v1/usuarios/', rotasV1Usuarios.default);
  */
  app.use('/api/v1/medicamentos/', rotasV1Medicamentos.default);
 
+/*
+ * Configura rotas de atendimentos
+ */
+app.use('/api/v1/atendimentos/', rotasV1Atendimentos.default);
   /*
  * Configura rotas de profissões
  */
