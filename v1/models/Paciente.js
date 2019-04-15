@@ -26,12 +26,12 @@ const pacienteSchema = new mongoose.Schema({
 
         cigarro: {
             fumante: Boolean,
-            observacao: String
+            observacaoCigarro: String
         },
 
         bebidaAlcoolica: {
-            consume: Boolean,
-            observacao: String
+            consome: Boolean,
+            observacaoBebidaAlcoolica: String
         }        
     },
 
