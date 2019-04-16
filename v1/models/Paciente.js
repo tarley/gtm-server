@@ -22,7 +22,7 @@ const pacienteSchema = new mongoose.Schema({
     habitosVida: {
         atividadeFisica: String,
         terapiaAlternativa: String,
-        alerta: String,
+        alertas: String,
 
         cigarro: {
             fumante: Boolean,
