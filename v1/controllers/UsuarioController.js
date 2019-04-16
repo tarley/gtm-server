@@ -97,23 +97,6 @@ class UsuarioController {
         }
     }
 
-    
-    async emailJaExiste(email) {
-        try {
-            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
-            
-            const usuario = await Usuario.findOne({email: email}).exec();
-            if(usuario) {
-                throw new Error(mensagens.EMAIL_JA_EXISTE); 
-            } else {
-                return true;
-            }
-
-        } catch(err) {
-            throw new Error(mensagens.EMAIL_JA_EXISTE);
-        }
-    }
-
     validarPerfil(value) {
         if (value !== "Administrador" && value !== "Normal")
             throw new Error(mensagens.PERFIL_INVALIDO_USUARIO);   
