@@ -19,6 +19,13 @@ router.route('/')
 router.route('/:id')
     .get(controller.consultarPorId)
     .delete(controller.exluir)
-    .put(controller.alterar)
+    .put(
+        [
+            check('nome', mensagens.CAMPO_NOME_VAZIO).not().isEmpty(),
+            check('cpf', mensagens.CAMPO_CPF_VAZIO).not().isEmpty(),
+            check('cpf', mensagens.CAMPO_CPF_MIN).isLength({min: 11, max: 11}),
+            check('dataNascimento', mensagens.CAMPO_DTANASC_VAZIO).not().isEmpty()
+        ],
+        controller.alterar)
 
 exports.default = router;
