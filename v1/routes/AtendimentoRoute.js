@@ -14,4 +14,7 @@ router.route('/:id')
     .delete(controller.excluir)
     .put(controller.alterar);
 
+router.route('/paciente/:id')
+    .get(controller.buscaUltimoAtendimento)
+
 exports.default = router;

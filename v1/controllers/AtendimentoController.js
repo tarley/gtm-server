@@ -7,10 +7,22 @@ const mensagens = require('../utils/Mensagens');
 
 class AtendimentoController {
 
+    async buscaUltimoAtendimento(req, res) {
+        try {
+            mongoose.connect(URL_MONGO_DB, { useNewUrlParser: true });
+            
+            const query = Atendimento.findOne({idPaciente: req.params.id}).sort({dataAtendimento: -1});
+            const atendimento = await query.exec();
+            res.json(atendimento);
+        } catch(err) {
+            res.status(500).json(err);
+        }
+    }
+
     async consultar(req, res) {
         try {
             mongoose.connect(URL_MONGO_DB, { useNewUrlParser: true });
-            console.log('Oláaa')
+            
             const query = Atendimento.find();
             const atendimentos = await query.exec();
             res.json(atendimentos);
