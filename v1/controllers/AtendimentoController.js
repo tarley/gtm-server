@@ -7,7 +7,7 @@ const mensagens = require('../utils/Mensagens');
 
 class AtendimentoController {
 
-    async buscaUltimoAtendimento(req, res) {
+    async buscaUltimoAtendimentoPorIdPaciente(req, res) {
         try {
             mongoose.connect(URL_MONGO_DB, { useNewUrlParser: true });
             
