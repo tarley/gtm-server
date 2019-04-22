@@ -15,6 +15,6 @@ router.route('/:id')
     .put(controller.alterar);
 
 router.route('/paciente/:id')
-    .get(controller.buscaUltimoAtendimento)
+    .get(controller.buscaUltimoAtendimentoPorIdPaciente)
 
 exports.default = router;
