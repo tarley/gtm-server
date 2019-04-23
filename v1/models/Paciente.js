@@ -7,20 +7,20 @@ const pacienteSchema = new mongoose.Schema({
     dataNascimento: Date,
     estadoCivil: String,
     anosEstudo: Number,
-    telefone: String,
+    telefone: Number,
     profissao: String,
+    endereco: String,
 
     dadosComplementares: {
         profissionalServico: String,
         lugarAtendimento: String,
-        endereco: String,
         ubs: String,
         acessoServico: String,
         motivoConsulta: String
     },
 
     habitosVida: {
-        atividadeFisica: String,
+        atividadeFisica: Boolean,
         terapiaAlternativa: String,
         alertas: String,
 
@@ -36,9 +36,9 @@ const pacienteSchema = new mongoose.Schema({
     },
 
     dadosAntropometricos: {
-        peso: String,
+        peso: Number,
         altura: Number,
-        imc: String
+        imc: Number
     },
     
     rotina: {
