@@ -9,12 +9,18 @@ module.exports = {
 
     //Mensagens Paciente
     PACIENTE_NAO_ENCONTRADO: 'Paciente não encontrado!',
-
-    //Mensagens Atendimento
-    ATENDIMENTO_NAO_ENCONTRADO: 'Atendimento não encontrado!',
     CAMPO_NOME_VAZIO: 'Nome deve ser informado',
     CAMPO_CPF_VAZIO: 'CPF deve ser informado',
     CAMPO_DTANASC_VAZIO: 'Data de Nascimento deve ser Informada',
-    CAMPO_CPF_MIN: 'CPF com tamanho inválido'
+    CAMPO_CPF_MIN: 'CPF com tamanho inválido',
+    CAMPO_TELEFONE_VAZIO: 'Telefone deve ser informado',
+    CAMPO_TELEFONE_TAMANHO: 'Telefone deve conter entre 10 e 11 digitos (Com DDD)',
+    CAMPO_ANOSESTUDO_VAZIO: 'Anos de Estudos deve ser informado',
+    CAMPO_ESTADOCIVIL_VAZIO: 'Estado Civil deve ser informado',
+    CAMPO_MOTIVOCONSULTA_VAZIO: 'Motivo da Consulta deve ser informado',
+
+    //Mensagens Atendimento
+    ATENDIMENTO_NAO_ENCONTRADO: 'Atendimento não encontrado!',
+    
 
 }
