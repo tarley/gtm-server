@@ -17,7 +17,7 @@ router.route('/')
             check('dataNascimento', mensagens.CAMPO_DTANASC_VAZIO).not().isEmpty(),
             check('anosEstudo', mensagens.CAMPO_ANOSESTUDO_VAZIO).not().isEmpty(),
             check('estadoCivil', mensagens.CAMPO_ESTADOCIVIL_VAZIO).not().isEmpty(),
-            check('motivoConsulta', mensagens.CAMPO_MOTIVOCONSULTA_VAZIO).not().isEmpty(),
+            check('dadosComplementares.motivoConsulta', mensagens.CAMPO_MOTIVOCONSULTA_VAZIO).isLength({min: 1}),
         ], 
         controller.inserir);
 
@@ -34,7 +34,7 @@ router.route('/:id')
             check('dataNascimento', mensagens.CAMPO_DTANASC_VAZIO).not().isEmpty(),
             check('anosEstudo', mensagens.CAMPO_ANOSESTUDO_VAZIO).not().isEmpty(),
             check('estadoCivil', mensagens.CAMPO_ESTADOCIVIL_VAZIO).not().isEmpty(),
-            check('motivoConsulta', mensagens.CAMPO_MOTIVOCONSULTA_VAZIO).not().isEmpty(),
+            check('dadosComplementares.motivoConsulta', mensagens.CAMPO_MOTIVOCONSULTA_VAZIO).isLength({min: 1}),
         ],
         controller.alterar);
 
