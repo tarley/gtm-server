@@ -9,6 +9,15 @@ const atendimentoSchema = new mongoose.Schema({
         doencas: [{
             nome: String,
             descricao: String,
+            planoCuidado: {
+                objetivoTerapeutico: String,
+                condutas: {
+                    medicamento: String,
+                    conduta: String,
+                },
+                scf: String,
+                outrasCondutas: String
+            },
             farmacoterapias: [{
                 medicamento: String,
                 posologia: String,
@@ -21,15 +30,6 @@ const atendimentoSchema = new mongoose.Schema({
                 conduta: String,
             }],
         }],
-        planoCuidado: {
-            objetivoTerapeutico: String,
-            condutas: {
-                medicamento: String,
-                conduta: String,
-            },
-            scf: String,
-            outrasCondutas: String
-        }
 })
 
 module.exports = mongoose.model('Atendimento', atendimentoSchema)
