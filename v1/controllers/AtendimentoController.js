@@ -3,6 +3,7 @@ const {validationResult} = require('express-validator/check');
 
 const {URL_MONGO_DB} = require('../utils/Constantes');
 const Atendimento = require('../models/Atendimento');
+const Paciente = require('../models/Paciente');
 const mensagens = require('../utils/Mensagens');
 
 class AtendimentoController {
@@ -14,6 +15,28 @@ class AtendimentoController {
             const query = Atendimento.findOne({idPaciente: req.params.id}).sort({dataAtendimento: -1});
             const atendimento = await query.exec();
             res.json(atendimento);
+        } catch(err) {
+            res.status(500).json(err);
+        }
+    }
+
+    async buscaPorCpfPaciente(req, res) {
+        try {
+            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+
+            const queryPaciente = Paciente.findOne({cpf: req.params.cpf});
+            const paciente = await queryPaciente.exec();
+
+            let atendimentos;
+            if(paciente) {
+                const query = Atendimento.find({nomePaciente: paciente.nome});
+                atendimentos = await query.exec();
+            } else {
+                atendimentos = [];
+            }
+
+            res.json(atendimentos);
+
         } catch(err) {
             res.status(500).json(err);
         }

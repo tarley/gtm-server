@@ -9,6 +9,7 @@ module.exports = {
 
     //Mensagens Paciente
     PACIENTE_NAO_ENCONTRADO: 'Paciente não encontrado!',
+    ERRO_BUSCAR_PACIENTE: 'Erro ao buscar paciente!',
     CAMPO_NOME_VAZIO: 'Nome deve ser informado',
     CAMPO_CPF_VAZIO: 'CPF deve ser informado',
     CAMPO_DTANASC_VAZIO: 'Data de Nascimento deve ser Informada',
