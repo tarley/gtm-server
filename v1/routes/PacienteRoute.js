@@ -26,6 +26,9 @@ router.route('/:id')
             check('cpf', mensagens.CAMPO_CPF_MIN).isLength({min: 11, max: 11}),
             check('dataNascimento', mensagens.CAMPO_DTANASC_VAZIO).not().isEmpty()
         ],
-        controller.alterar)
+        controller.alterar);
+
+router.route('/cpf/:cpf')
+    .get(controller.consultarPorCpf)
 
 exports.default = router;

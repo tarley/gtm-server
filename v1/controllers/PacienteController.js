@@ -17,7 +17,11 @@ class PacienteController {
                 useNewUrlParser: true
             });
 
-            const query = Paciente.find({}, { 'nome': 1, 'sexo': 1, 'cpf': 1 });
+            const query = Paciente.find({}, {
+                'nome': 1,
+                'sexo': 1,
+                'cpf': 1
+            });
             const pacientes = await query.exec();
             res.json(pacientes);
         } catch (err) {
@@ -27,7 +31,9 @@ class PacienteController {
 
     async consultarPorId(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, { useNewUrlParser: true });
+            mongoose.connect(URL_MONGO_DB, {
+                useNewUrlParser: true
+            });
 
             const query = Paciente.findById(req.params.id);
             const paciente = await query.exec();
@@ -35,7 +41,11 @@ class PacienteController {
             if (paciente)
                 res.json(paciente);
             else
-                res.status(404).json({ errors: [{ msg: mensagens.PACIENTE_NAO_ENCONTRADO }] });
+                res.status(404).json({
+                    errors: [{
+                        msg: mensagens.PACIENTE_NAO_ENCONTRADO
+                    }]
+                });
         } catch (err) {
             res.status(500).json(err);
         }
@@ -71,9 +81,15 @@ class PacienteController {
                 useNewUrlParser: true
             });
 
-            Paciente.deleteOne({ _id: mongoose.Types.ObjectId(req.params.id) }, (err, result) => {
+            Paciente.deleteOne({
+                _id: mongoose.Types.ObjectId(req.params.id)
+            }, (err, result) => {
                 if (err)
-                    return res.status(500).json({ errors: [{ ...err }] });
+                    return res.status(500).json({
+                        errors: [{
+                            ...err
+                        }]
+                    });
 
                 if (result.deletedCount == 0)
                     return res.status(404).json(result);
@@ -92,9 +108,15 @@ class PacienteController {
                 useNewUrlParser: true
             });
 
-            Paciente.updateOne({ _id: mongoose.Types.ObjectId(req.params.id) }, req.body, (err, result) => {
+            Paciente.updateOne({
+                _id: mongoose.Types.ObjectId(req.params.id)
+            }, req.body, (err, result) => {
                 if (err)
-                    return res.status(500).json({ errors: [{ ...err }] });
+                    return res.status(500).json({
+                        errors: [{
+                            ...err
+                        }]
+                    });
 
                 if (result.nModified == 0)
                     return res.status(404).json(result);
@@ -103,6 +125,33 @@ class PacienteController {
             })
         } catch (err) {
             res.status(500).json(err);
+        }
+    }
+
+    async consultarPorCpf(req, res) {
+        try {
+            mongoose.connect(URL_MONGO_DB, {
+                useNewUrlParser: true
+            });
+
+            const cpf = req.params.cpf; 
+            
+            const query = Paciente.find({
+                'cpf': {$regex: cpf + '.*'}
+            });
+            const pacientes = await query.exec();
+
+            if (pacientes)
+                res.json(pacientes);
+            else
+                res.status(404).json({
+                    errors: [{
+                        msg: mensagens.PACIENTE_NAO_ENCONTRADO
+                    }]
+                });
+
+        } catch (err) {
+            res.status(500).json(err)
         }
     }
 
