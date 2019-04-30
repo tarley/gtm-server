@@ -9,14 +9,15 @@ const pacienteSchema = new mongoose.Schema({
     anosEstudo: Number,
     telefone: Number,
     profissao: String,
-    endereco: String,
 
     dadosComplementares: {
+        informacoesGerais: String,
         profissionalServico: String,
         lugarAtendimento: String,
         ubs: String,
         acessoServico: String,
-        motivoConsulta: String
+        motivoConsulta: String,
+        endereco: String,
     },
 
     habitosVida: {
@@ -32,15 +33,24 @@ const pacienteSchema = new mongoose.Schema({
         bebidaAlcoolica: {
             consome: Boolean,
             observacaoBebidaAlcoolica: String
-        }        
+        }
     },
 
     dadosAntropometricos: {
-        peso: Number,
-        altura: Number,
-        imc: Number
+        peso: {
+            type: Number,
+            min: 0,
+        },
+        altura: {
+            type: Number,
+            min: 0,
+        },
+        imc: {
+            type: Number,
+            min: 0,
+        }
     },
-    
+
     rotina: {
         acorda: String,
         cafedaManha: String,
