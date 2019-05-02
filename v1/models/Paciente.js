@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const pacienteSchema = new mongoose.Schema({
+    excluido: {
+        type: Boolean,
+        default: false
+    },
     nome: String,
     cpf: String,
     sexo: String,
