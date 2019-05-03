@@ -17,7 +17,7 @@ class PacienteController {
                 useNewUrlParser: true
             });
 
-            const query = Paciente.find({}, {
+            const query = Paciente.find({excluido: false}, {
                 'nome': 1,
                 'sexo': 1,
                 'cpf': 1
@@ -81,8 +81,10 @@ class PacienteController {
                 useNewUrlParser: true
             });
 
-            Paciente.deleteOne({
+            Paciente.updateOne({
                 _id: mongoose.Types.ObjectId(req.params.id)
+            }, {
+                excluido: true
             }, (err, result) => {
                 if (err)
                     return res.status(500).json({
@@ -91,11 +93,12 @@ class PacienteController {
                         }]
                     });
 
-                if (result.deletedCount == 0)
+                if (result.nModified == 0)
                     return res.status(404).json(result);
 
                 return res.json(result);
-            });
+
+            })
 
         } catch (err) {
             res.status(500).json(err);
@@ -134,10 +137,12 @@ class PacienteController {
                 useNewUrlParser: true
             });
 
-            const cpf = req.params.cpf; 
-            
+            const cpf = req.params.cpf;
+
             const query = Paciente.find({
-                'cpf': {$regex: cpf + '.*'}
+                'cpf': {
+                    $regex: cpf + '.*'
+                }
             });
             const pacientes = await query.exec();
 
