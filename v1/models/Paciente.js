@@ -6,7 +6,10 @@ const pacienteSchema = new mongoose.Schema({
         default: false
     },
     nome: String,
-    cpf: String,
+    cpf: {
+        type: String,
+        unique: true
+    },
     sexo: String,
     dataNascimento: Date,
     estadoCivil: String,
