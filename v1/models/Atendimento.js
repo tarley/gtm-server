@@ -20,7 +20,8 @@ const atendimentoSchema = new mongoose.Schema({
             },
             farmacoterapias: [{
                 medicamento: String,
-                posologia: String,
+                posologiaRelatada: String,
+                posologiaPrescrita: String,
                 efetividade: String,
                 tempoUso: String,
                 seguranca: String,
