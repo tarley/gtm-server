@@ -6,6 +6,10 @@ const atendimentoSchema = new mongoose.Schema({
         dataAtendimento: Date,
         quadroGeral: String,
         dataResultado: Date,
+        finalizado: {
+            type: Boolean,
+            default: false
+        },
         doencas: [{
             nome: String,
             descricao: String,
