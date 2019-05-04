@@ -11,7 +11,6 @@ module.exports = {
     PACIENTE_NAO_ENCONTRADO: 'Paciente não encontrado!',
     ERRO_BUSCAR_PACIENTE: 'Erro ao buscar paciente!',
     CAMPO_NOME_VAZIO: 'Nome deve ser informado',
-    CAMPO_CPF_VAZIO: 'CPF deve ser informado',
     CAMPO_DTANASC_VAZIO: 'Data de Nascimento deve ser Informada',
     CAMPO_CPF_MIN: 'CPF com tamanho inválido',
     CAMPO_TELEFONE_VAZIO: 'Telefone deve ser informado',
