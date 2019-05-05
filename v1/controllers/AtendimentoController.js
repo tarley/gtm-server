@@ -123,19 +123,26 @@ class AtendimentoController {
         return titulo.replace(primeiroCaractere, primeiroCaractere.toUpperCase());
     }
 
-    alterar(req, res) {
+    async alterar(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, { useNewUrlParser: true });
+            const erros = validationResult(req);
 
-            Atendimento.updateOne({ _id: mongoose.Types.ObjectId(req.params.id) }, req.body, (err, result) => {
-                if (err)
-                    return res.status(500).json({ errors: [{ ...err }] });
+            if(!erros.isEmpty())
+                return res.status(422).json({errors: erros.array()});
 
-                if (result.nModified == 0)
-                    return res.status(404).json(result);
+            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
 
-                return res.json(result);
-            });
+            const atendimento = {
+                ...req.body
+            }
+
+            const id = mongoose.Types.ObjectId(req.params.id);
+            const result = await Atendimento.updateOne({_id: id}, atendimento);
+
+            if(result.n == 0)
+                return res.status(404).json(result); 
+
+            res.json(result);
         } catch (err) {
             res.status(500).json(err);
         }
