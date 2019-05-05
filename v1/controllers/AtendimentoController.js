@@ -148,6 +148,22 @@ class AtendimentoController {
         }
     }
 
+    async finalizaAtendimento(req, res) {
+        try {
+            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+
+            const id = mongoose.Types.ObjectId(req.params.id);
+            const result = await Atendimento.updateOne({_id: id}, {finalizado: true});
+
+            if(result.n == 0)
+                return res.status(404).json(result); 
+
+            res.json(result);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    }
+
 }
 
 module.exports = new AtendimentoController();

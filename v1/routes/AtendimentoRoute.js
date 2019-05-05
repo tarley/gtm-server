@@ -33,6 +33,9 @@ router.route('/:id')
 router.route('/paciente/:id')
     .get(controller.buscaUltimoAtendimentoPorIdPaciente);
 
+router.route('/finaliza/:id')
+    .put(controller.finalizaAtendimento);
+
 router.route('/paciente/cpf/:cpf')
     .get(controller.buscaPorCpfPaciente);
 
