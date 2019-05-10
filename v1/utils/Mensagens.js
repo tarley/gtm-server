@@ -23,5 +23,8 @@ module.exports = {
     ATENDIMENTO_NAO_ENCONTRADO: 'Atendimento não encontrado!',
     ERRO_ALTERAR_ATENDIMENTO_FINALIZADO: 'Não é possível editar um atendimento finalizado!',
 
+    //Mensagens Medicamento
+    CAMPO_DESCRICAO_VAZIO: 'A descrição deve ser informada.'
+
 
 }
