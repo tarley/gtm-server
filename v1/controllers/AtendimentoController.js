@@ -151,7 +151,6 @@ class AtendimentoController {
 
             res.json(result);
         } catch (err) {
-            console.log(err);
             res.status(500).json(err);
         }
     }
@@ -159,8 +158,15 @@ class AtendimentoController {
     async finalizaAtendimento(req, res) {
         try {
             mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
-
             const id = mongoose.Types.ObjectId(req.params.id);
+
+            const query = Atendimento.findOne({_id: id});
+            
+            const atend = await query.exec();
+            if(atend && atend.finalizado == true) {
+                res.status(400).json({errors: [{msg: mensagens.ATENDIMENTO_JA_FINALIZADO}]});
+            }
+
             const result = await Atendimento.updateOne({_id: id}, {finalizado: true});
 
             if(result.n == 0)
