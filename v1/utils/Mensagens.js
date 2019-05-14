@@ -24,7 +24,7 @@ module.exports = {
     ERRO_ALTERAR_ATENDIMENTO_FINALIZADO: 'Não é possível editar um atendimento finalizado!',
     ATENDIMENTO_JA_FINALIZADO: 'O atendimento já está finalizado!',
 
-    //Mensagens Medicamento
+    //Mensagens Cadastros
     CAMPO_DESCRICAO_VAZIO: 'A descrição deve ser informada.'
 
 
