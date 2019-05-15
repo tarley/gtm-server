@@ -54,29 +54,25 @@ class UsuarioController {
         }
     }
 
-    excluir(req, res) {
+    async excluir(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, {
-                useNewUrlParser: true
-            });
+            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            const id = mongoose.Types.ObjectId(req.params.id);
 
-            Usuario.updateOne({
-                _id: mongoose.Types.ObjectId(req.params.id)
-            }, {inativo: true}, (err, result) => {
-                if (err)
-                    return res.status(500).json({
-                        errors: [{
-                            ...err
-                        }]
-                    });
+            const query = Usuario.findOne({_id: id});
+            
+            const user = await query.exec();
 
-                if (result.nModified == 0)
-                    return res.status(404).json(result);
+            if(user && user.inativo == true) {
+                res.status(400).json({errors: [{msg: mensagens.USUARIO_JA_INATIVO}]});
+            }
 
-                return res.json(result);
+            const result = await Usuario.updateOne({_id: id}, {inativo: true});
 
-            })
+            if(result.n == 0)
+                return res.status(404).json(result); 
 
+            res.json(result);
         } catch (err) {
             res.status(500).json(err);
         }
