@@ -11,7 +11,7 @@ class UsuarioController {
         try {
             mongoose.connect(URL_MONGO_DB, { useNewUrlParser: true });
 
-            const query = Usuario.find();
+            const query = Usuario.find({inativo: false});
             const usuarios = await query.exec();
             res.json(usuarios);
         } catch(err) {
@@ -56,18 +56,28 @@ class UsuarioController {
 
     excluir(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
-            
-            Usuario.deleteOne({_id: mongoose.Types.ObjectId(req.params.id)}, (err, result) => {
-                if(err)
-                    return res.status(500).json({errors: [{...err}]});
-                
-                if(result.deletedCount == 0)
-                   return res.status(404).json(result); 
+            mongoose.connect(URL_MONGO_DB, {
+                useNewUrlParser: true
+            });
+
+            Usuario.updateOne({
+                _id: mongoose.Types.ObjectId(req.params.id)
+            }, {inativo: true}, (err, result) => {
+                if (err)
+                    return res.status(500).json({
+                        errors: [{
+                            ...err
+                        }]
+                    });
+
+                if (result.nModified == 0)
+                    return res.status(404).json(result);
 
                 return res.json(result);
-            });
-        } catch(err) {
+
+            })
+
+        } catch (err) {
             res.status(500).json(err);
         }
     }
@@ -103,6 +113,7 @@ class UsuarioController {
 
         return true;
     }
+
 }
 
 module.exports = new UsuarioController();
