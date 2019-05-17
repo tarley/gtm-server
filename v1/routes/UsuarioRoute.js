@@ -28,4 +28,7 @@ router.route('/:id')
         ],
         controller.alterar);
 
+router.route('/email/:email')        
+    .get(controller.consultarPorEmail);    
+
 exports.default = router;

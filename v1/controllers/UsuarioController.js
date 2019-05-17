@@ -35,20 +35,57 @@ class UsuarioController {
         }
     }
 
+    async consultarPorEmail(req, res){
+        try {                
+            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+
+            const query = Usuario.findOne({email: req.params.email});
+            const user = await query.exec();
+
+            const alt = mongoose.Types.ObjectId(user._id);
+            
+            if(user && user.inativo == true){
+                res.json(alt);
+            }else
+                res.status(404).json({errors: [{msg: mensagens.USUARIO_NAO_ENCONTRADO}]});             
+        } catch(err) {
+            res.status(500).json(err);
+        }
+    }
+
     async inserir(req, res) {
         try {
             const erros = validationResult(req);
             
-            if(!erros.isEmpty())
-                return res.status(422).json({errors: erros.array()});
-            
-            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+                if(!erros.isEmpty())
+                    return res.status(422).json({errors: erros.array()});
+                
+                mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
 
-            let newUsuario = new Usuario({
-                ...req.body
-            })
-            newUsuario = await newUsuario.save();
-            res.json(newUsuario);
+                const query = Usuario.findOne({email: req.params.email});
+                const user = await query.exec();
+
+                if(user && user.inativo == true){
+                    const result = await Usuario.updateOne(
+                        {_id: mongoose.Types.ObjectId(user._id)},
+                        {nome: req.body.nome,
+                         senha: req.body.senha,
+                         instituicao: req.body.instituicao,
+                         perfil: req.body.perfil,
+                         inativo: false});
+
+                        if(result.n == 0){
+                            return res.status(404).json(result);
+                        }
+                        res.json(result);
+                }else{
+                    let newUsuario = new Usuario({
+                        ...req.body
+                    })
+        
+                    newUsuario = await newUsuario.save();
+                    res.json(newUsuario);
+                }
         } catch(err) {
             res.status(500).json(err);
         }
