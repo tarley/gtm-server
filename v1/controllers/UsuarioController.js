@@ -92,6 +92,7 @@ class UsuarioController {
             }
 
             const id = mongoose.Types.ObjectId(req.params.id);
+
             const result = await Usuario.updateOne({_id: id}, usuario);
 
             if(result.n == 0)
@@ -104,11 +105,11 @@ class UsuarioController {
     }
 
     validarPerfil(value) {
-        if (value !== "Administrador" && value !== "Normal")
+        if (value !== "Administrador" && value !== "Normal" && value != "Academico")
             throw new Error(mensagens.PERFIL_INVALIDO_USUARIO);   
 
         return true;
-    }
+    } 
 
 }
 
