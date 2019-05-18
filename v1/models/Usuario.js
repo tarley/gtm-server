@@ -7,7 +7,12 @@ const usuarioSchema = new mongoose.Schema({
     unique: true
   },
   senha: String,
-  perfil: String
+  perfil: String,
+  inativo: {
+    type: Boolean,
+    default: false
+  },
+  instituicao: String,
 })
 
 module.exports = mongoose.model('Usuario', usuarioSchema)

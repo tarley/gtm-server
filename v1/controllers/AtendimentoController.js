@@ -124,6 +124,14 @@ class AtendimentoController {
 
     async alterar(req, res) {
         try {
+            const id = mongoose.Types.ObjectId(req.params.id);
+            const query = Atendimento.findOne({_id: id});
+            
+            const atend = await query.exec();
+            if(atend && atend.finalizado == true) {
+                res.status(400).json({errors: [{msg: mensagens.ERRO_ALTERAR_ATENDIMENTO_FINALIZADO}]});
+            }
+
             const erros = validationResult(req);
 
             if(!erros.isEmpty())
@@ -135,7 +143,6 @@ class AtendimentoController {
                 ...req.body
             }
 
-            const id = mongoose.Types.ObjectId(req.params.id);
             const result = await Atendimento.updateOne({_id: id}, atendimento);
 
             if(result.n == 0)
@@ -152,6 +159,14 @@ class AtendimentoController {
             mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
 
             const id = mongoose.Types.ObjectId(req.params.id);
+
+            const query = Atendimento.findOne({_id: id});
+            
+            const atend = await query.exec();
+            if(atend && atend.finalizado == true) {
+                res.status(400).json({errors: [{msg: mensagens.ATENDIMENTO_JA_FINALIZADO}]});
+            }
+
             const result = await Atendimento.updateOne({_id: id}, {finalizado: true});
 
             if(result.n == 0)

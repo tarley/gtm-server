@@ -3,9 +3,13 @@ const {
     validationResult
 } = require('express-validator/check');
 
-const Profissao = require('../models/Profissao');
+const {
+    URL_MONGO_DB
+} = require('../utils/Constantes');
 
-class ProfissaoController {
+const Instituicao = require('../models/Instituicao');
+
+class InstituicaoController {
     async inserir(req, res) {
         try {
             const erros = validationResult(req);
@@ -19,12 +23,12 @@ class ProfissaoController {
                 useNewUrlParser: true
             });
 
-            let newProfissao = new Profissao({
+            let newInstituicao = new Instituicao({
                 ...req.body
             })
 
-            newProfissao = await newProfissao.save();
-            res.json(newProfissao);
+            newInstituicao = await newInstituicao.save();
+            res.json(newInstituicao);
         } catch (err) {
             res.status(500).json(err);
         }
@@ -36,9 +40,9 @@ class ProfissaoController {
                 useNewUrlParser: true
             });
 
-            const query = Profissao.find({}, {'descricao':1});
-            const profissao = await query.exec();
-            res.json(profissao);
+            const query = Instituicao.find({}, {'descricao':1});
+            const instituicao = await query.exec();
+            res.json(instituicao);
         } catch (err) {
             res.status(500).json(err);
         }
@@ -48,7 +52,7 @@ class ProfissaoController {
         try {
             mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
             
-            Profissao.deleteOne({_id: mongoose.Types.ObjectId(req.params.id)}, (err, result) => {
+            Instituicao.deleteOne({_id: mongoose.Types.ObjectId(req.params.id)}, (err, result) => {
                 if(err)
                     return res.status(500).json({errors: [{...err}]});
                 
@@ -63,4 +67,4 @@ class ProfissaoController {
     }
 }
 
-module.exports = new ProfissaoController();
+module.exports = new InstituicaoController();

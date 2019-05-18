@@ -6,6 +6,7 @@ module.exports = {
     EMAIL_INVALIDO: 'Digite um e-mail válido!',
     EMAIL_JA_EXISTE: 'O E-mail já existe!',
     USUARIO_NAO_ENCONTRADO: 'Usuário não encontrado!',
+    USUARIO_JA_INATIVO: 'Usuário já esta inativo.',
 
     //Mensagens Paciente
     PACIENTE_NAO_ENCONTRADO: 'Paciente não encontrado!',
@@ -21,6 +22,11 @@ module.exports = {
 
     //Mensagens Atendimento
     ATENDIMENTO_NAO_ENCONTRADO: 'Atendimento não encontrado!',
-    
+    ERRO_ALTERAR_ATENDIMENTO_FINALIZADO: 'Não é possível editar um atendimento finalizado!',
+    ATENDIMENTO_JA_FINALIZADO: 'O atendimento já está finalizado!',
+
+    //Mensagens Cadastros
+    CAMPO_DESCRICAO_VAZIO: 'A descrição deve ser informada.'
+
 
 }
