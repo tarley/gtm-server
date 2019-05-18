@@ -6,7 +6,7 @@ const rotasV1Instituicao = require('./v1/routes/InstituicaoRoute')
 
 const app = express();
 
-require('dotenv').config()
+require('dotenv').config();
 
 /*
  * Configura o body parser
