@@ -35,7 +35,7 @@ class UsuarioController {
 
     async consultarPorEmail(req, res){
         try {                
-            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
 
             const query = Usuario.findOne({email: req.params.email});
             const user = await query.exec();
@@ -58,7 +58,7 @@ class UsuarioController {
                 if(!erros.isEmpty())
                     return res.status(422).json({errors: erros.array()});
                 
-                mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+                mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
 
                 const query = Usuario.findOne({email: req.params.email});
                 const user = await query.exec();
@@ -91,7 +91,7 @@ class UsuarioController {
 
     async excluir(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
             const id = mongoose.Types.ObjectId(req.params.id);
 
             const query = Usuario.findOne({_id: id});

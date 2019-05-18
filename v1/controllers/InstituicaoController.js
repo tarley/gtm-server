@@ -3,10 +3,6 @@ const {
     validationResult
 } = require('express-validator/check');
 
-const {
-    URL_MONGO_DB
-} = require('../utils/Constantes');
-
 const Instituicao = require('../models/Instituicao');
 
 class InstituicaoController {
