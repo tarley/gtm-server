@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const { validationResult } = require('express-validator/check');
 
-const { URL_MONGO_DB } = require('../utils/Constantes');
 const Atendimento = require('../models/Atendimento');
 const Paciente = require('../models/Paciente');
 const mensagens = require('../utils/Mensagens');
@@ -10,7 +9,7 @@ class AtendimentoController {
 
     async buscaUltimoAtendimentoPorIdPaciente(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, { useNewUrlParser: true });
+            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             const query = Atendimento.findOne({ idPaciente: req.params.id }).sort({ dataAtendimento: -1 });
             const atendimento = await query.exec();
@@ -22,7 +21,7 @@ class AtendimentoController {
 
     async buscaPorCpfPaciente(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, { useNewUrlParser: true });
+            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             const queryPaciente = Paciente.findOne({ cpf: req.params.cpf });
             const paciente = await queryPaciente.exec();
@@ -44,7 +43,7 @@ class AtendimentoController {
 
     async consultar(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, { useNewUrlParser: true });
+            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             const query = Atendimento.find().sort({ dataAtendimento: -1 });
             const atendimentos = await query.exec();
@@ -56,7 +55,7 @@ class AtendimentoController {
 
     async consultarPorId(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, { useNewUrlParser: true });
+            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             const query = Atendimento.findById(req.params.id);
             const atendimentos = await query.exec();
@@ -77,7 +76,7 @@ class AtendimentoController {
             if (!erros.isEmpty())
                 return res.status(422).json({ errors: erros.array() });
 
-            mongoose.connect(URL_MONGO_DB, { useNewUrlParser: true });
+            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             let newAtendimento = new Atendimento({
                 ...req.body
@@ -91,7 +90,7 @@ class AtendimentoController {
 
     excluir(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, { useNewUrlParser: true });
+            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             Atendimento.deleteOne({ _id: mongoose.Types.ObjectId(req.params.id) }, (err, result) => {
                 if (err)
@@ -130,7 +129,7 @@ class AtendimentoController {
             if(!erros.isEmpty())
                 return res.status(422).json({errors: erros.array()});
 
-            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
 
             const atendimento = {
                 ...req.body
@@ -150,7 +149,7 @@ class AtendimentoController {
 
     async finalizaAtendimento(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
 
             const id = mongoose.Types.ObjectId(req.params.id);
             const result = await Atendimento.updateOne({_id: id}, {finalizado: true});

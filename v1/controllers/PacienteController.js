@@ -4,16 +4,13 @@ const {
     validationResult
 } = require('express-validator/check');
 
-const {
-    URL_MONGO_DB
-} = require('../utils/Constantes');
 const Paciente = require('../models/Paciente');
 
 class PacienteController {
 
     async consultar(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, {
+            mongoose.connect(process.env.DB_URL, {
                 useNewUrlParser: true
             });
 
@@ -31,7 +28,7 @@ class PacienteController {
 
     async consultarPorId(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, {
+            mongoose.connect(process.env.DB_URL, {
                 useNewUrlParser: true
             });
 
@@ -60,7 +57,7 @@ class PacienteController {
                     errors: erros.array()
                 });
 
-            mongoose.connect(URL_MONGO_DB, {
+            mongoose.connect(process.env.DB_URL, {
                 useNewUrlParser: true
             });
 
@@ -77,7 +74,7 @@ class PacienteController {
 
     exluir(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, {
+            mongoose.connect(process.env.DB_URL, {
                 useNewUrlParser: true
             });
 
@@ -107,7 +104,7 @@ class PacienteController {
 
     alterar(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, {
+            mongoose.connect(process.env.DB_URL, {
                 useNewUrlParser: true
             });
 
@@ -133,7 +130,7 @@ class PacienteController {
 
     async consultarPorCpf(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, {
+            mongoose.connect(process.env.DB_URL, {
                 useNewUrlParser: true
             });
 

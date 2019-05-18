@@ -7,6 +7,8 @@ const rotasV1Profissoes = require('./v1/routes/ProfissaoRoute');
 
 const app = express();
 
+require('dotenv').config()
+
 /*
  * Configura o body parser
  */

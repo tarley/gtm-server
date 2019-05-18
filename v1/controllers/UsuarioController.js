@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const {validationResult} = require('express-validator/check');
-
-const {URL_MONGO_DB} = require('../utils/Constantes');
 const Usuario = require('../models/Usuario');
 const mensagens = require('../utils/Mensagens');
 
@@ -9,7 +7,7 @@ class UsuarioController {
 
     async consultar(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, { useNewUrlParser: true });
+            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             const query = Usuario.find();
             const usuarios = await query.exec();
@@ -21,7 +19,7 @@ class UsuarioController {
 
     async consultarPorId(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
             
             const query = Usuario.findById(req.params.id);
             const usuario = await query.exec();
@@ -42,7 +40,7 @@ class UsuarioController {
             if(!erros.isEmpty())
                 return res.status(422).json({errors: erros.array()});
             
-            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
 
             let newUsuario = new Usuario({
                 ...req.body
@@ -56,7 +54,7 @@ class UsuarioController {
 
     excluir(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
             
             Usuario.deleteOne({_id: mongoose.Types.ObjectId(req.params.id)}, (err, result) => {
                 if(err)
@@ -79,7 +77,7 @@ class UsuarioController {
             if(!erros.isEmpty())
                 return res.status(422).json({errors: erros.array()});
 
-            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
 
             const usuario = {
                 ...req.body

@@ -3,10 +3,6 @@ const {
     validationResult
 } = require('express-validator/check');
 
-const {
-    URL_MONGO_DB
-} = require('../utils/Constantes');
-
 const Profissao = require('../models/Profissao');
 
 class ProfissaoController {
@@ -19,7 +15,7 @@ class ProfissaoController {
                     errors: erros.array()
                 });
 
-            mongoose.connect(URL_MONGO_DB, {
+            mongoose.connect(process.env.DB_URL, {
                 useNewUrlParser: true
             });
 
@@ -36,7 +32,7 @@ class ProfissaoController {
 
     async consultar(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, {
+            mongoose.connect(process.env.DB_URL, {
                 useNewUrlParser: true
             });
 
@@ -50,7 +46,7 @@ class ProfissaoController {
 
     excluir(req, res) {
         try {
-            mongoose.connect(URL_MONGO_DB, {useNewUrlParser: true});
+            mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
             
             Profissao.deleteOne({_id: mongoose.Types.ObjectId(req.params.id)}, (err, result) => {
                 if(err)
