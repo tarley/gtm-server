@@ -59,7 +59,7 @@ class AtendimentoController {
         try {
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
-            const query = Atendimento.find().sort({ dataAtendimento: -1 });
+            const query = Atendimento.find().sort({ dataAtendimento: -1 }).limit(50);
             const atendimentos = await query.exec();
             res.json(atendimentos);
         } catch (err) {
