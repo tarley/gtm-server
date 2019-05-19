@@ -22,7 +22,6 @@ router.route('/')
 
 router.route('/:id')
     .get(controller.consultarPorId)
-    .delete(controller.exluir)
     .put(
         [
             check('nome', mensagens.CAMPO_NOME_VAZIO).not().isEmpty(),

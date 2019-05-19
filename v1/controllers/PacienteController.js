@@ -72,35 +72,35 @@ class PacienteController {
         }
     }
 
-    exluir(req, res) {
-        try {
-            mongoose.connect(process.env.DB_URL, {
-                useNewUrlParser: true
-            });
+    // exluir(req, res) {
+    //     try {
+    //         mongoose.connect(process.env.DB_URL, {
+    //             useNewUrlParser: true
+    //         });
 
-            Paciente.updateOne({
-                _id: mongoose.Types.ObjectId(req.params.id)
-            }, {
-                excluido: true
-            }, (err, result) => {
-                if (err)
-                    return res.status(500).json({
-                        errors: [{
-                            ...err
-                        }]
-                    });
+    //         Paciente.updateOne({
+    //             _id: mongoose.Types.ObjectId(req.params.id)
+    //         }, {
+    //             excluido: true
+    //         }, (err, result) => {
+    //             if (err)
+    //                 return res.status(500).json({
+    //                     errors: [{
+    //                         ...err
+    //                     }]
+    //                 });
 
-                if (result.nModified == 0)
-                    return res.status(404).json(result);
+    //             if (result.nModified == 0)
+    //                 return res.status(404).json(result);
 
-                return res.json(result);
+    //             return res.json(result);
 
-            })
+    //         })
 
-        } catch (err) {
-            res.status(500).json(err);
-        }
-    }
+    //     } catch (err) {
+    //         res.status(500).json(err);
+    //     }
+    // }
 
     alterar(req, res) {
         try {
