@@ -19,20 +19,34 @@ class AtendimentoController {
         }
     }
 
-    async buscaPorCpfPaciente(req, res) {
+    async filtraAtendimentos(req, res) {
         try {
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
+            const filtroAtendimento = req.body;
+            const query = Atendimento.find().sort({ dataAtendimento: -1 });
 
-            const queryPaciente = Paciente.findOne({ cpf: req.params.cpf });
-            const paciente = await queryPaciente.exec();
-
-            let atendimentos;
-            if (paciente) {
-                const query = Atendimento.find({ nomePaciente: paciente.nome });
-                atendimentos = await query.exec();
-            } else {
-                atendimentos = [];
+            if (filtroAtendimento) {
+                if (filtroAtendimento.criterioBusca == 'CPF' && filtroAtendimento.cpf) {
+                    const queryPaciente = Paciente.findOne({ cpf: filtroAtendimento.cpf });
+                        const paciente = await queryPaciente.exec();
+                        if (paciente) {
+                            query.where('nomePaciente', paciente.nome);
+                        }
+                } else if(filtroAtendimento.criterioBusca == 'Nome' && filtroAtendimento.nomePaciente) {
+                    query.where('nomePaciente').regex('.*' + filtroAtendimento.nomePaciente + '.*');
+                }
+                 
+                if (filtroAtendimento.dataInicial) {
+                    query.where('dataAtendimento').gte(new Date(filtroAtendimento.dataInicial));
+                }
+                if (filtroAtendimento.dataFinal) {
+                    let dataFinal = new Date(filtroAtendimento.dataFinal);
+                    dataFinal = dataFinal.setDate(dataFinal.getDate() + 1);
+                    query.where('dataAtendimento').lte(dataFinal);
+                }
             }
+
+            const atendimentos = await query.exec();
 
             res.json(atendimentos);
 
@@ -107,7 +121,7 @@ class AtendimentoController {
     }
 
     validaAtributoDoenca(doencas, atributo) {
-        doencas.forEach(doenca => 
+        doencas.forEach(doenca =>
             doenca.farmacoterapias.forEach(farmacoterapia => {
                 if (!farmacoterapia[atributo]) {
                     throw new Error(this.formataNomeAtributo(atributo) + ' deve ser informado');
@@ -125,28 +139,28 @@ class AtendimentoController {
     async alterar(req, res) {
         try {
             const id = mongoose.Types.ObjectId(req.params.id);
-            const query = Atendimento.findOne({_id: id});
-            
+            const query = Atendimento.findOne({ _id: id });
+
             const atend = await query.exec();
-            if(atend && atend.finalizado == true) {
-                res.status(400).json({errors: [{msg: mensagens.ERRO_ALTERAR_ATENDIMENTO_FINALIZADO}]});
+            if (atend && atend.finalizado == true) {
+                res.status(400).json({ errors: [{ msg: mensagens.ERRO_ALTERAR_ATENDIMENTO_FINALIZADO }] });
             }
 
             const erros = validationResult(req);
 
-            if(!erros.isEmpty())
-                return res.status(422).json({errors: erros.array()});
+            if (!erros.isEmpty())
+                return res.status(422).json({ errors: erros.array() });
 
-            mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
+            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             const atendimento = {
                 ...req.body
             }
 
-            const result = await Atendimento.updateOne({_id: id}, atendimento);
+            const result = await Atendimento.updateOne({ _id: id }, atendimento);
 
-            if(result.n == 0)
-                return res.status(404).json(result); 
+            if (result.n == 0)
+                return res.status(404).json(result);
 
             res.json(result);
         } catch (err) {
@@ -156,21 +170,21 @@ class AtendimentoController {
 
     async finalizaAtendimento(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
+            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             const id = mongoose.Types.ObjectId(req.params.id);
 
-            const query = Atendimento.findOne({_id: id});
-            
+            const query = Atendimento.findOne({ _id: id });
+
             const atend = await query.exec();
-            if(atend && atend.finalizado == true) {
-                res.status(400).json({errors: [{msg: mensagens.ATENDIMENTO_JA_FINALIZADO}]});
+            if (atend && atend.finalizado == true) {
+                res.status(400).json({ errors: [{ msg: mensagens.ATENDIMENTO_JA_FINALIZADO }] });
             }
 
-            const result = await Atendimento.updateOne({_id: id}, {finalizado: true});
+            const result = await Atendimento.updateOne({ _id: id }, { finalizado: true });
 
-            if(result.n == 0)
-                return res.status(404).json(result); 
+            if (result.n == 0)
+                return res.status(404).json(result);
 
             res.json(result);
         } catch (err) {

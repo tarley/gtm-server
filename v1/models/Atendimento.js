@@ -6,6 +6,7 @@ const atendimentoSchema = new mongoose.Schema({
         dataAtendimento: Date,
         quadroGeral: String,
         dataResultado: Date,
+        experienciaSubjetiva: String, 
         finalizado: {
             type: Boolean,
             default: false
@@ -20,6 +21,7 @@ const atendimentoSchema = new mongoose.Schema({
                     conduta: String,
                 },
                 scf: String,
+                observacaoScf: String,
                 outrasCondutas: String
             },
             farmacoterapias: [{
@@ -30,9 +32,12 @@ const atendimentoSchema = new mongoose.Schema({
                 tempoUso: String,
                 seguranca: String,
                 dificuldadeUso: String,
-                prm : String,
-                causaPrm: String,
                 conduta: String,
+                prm: {
+                    prm : String,
+                    causa: String,
+                    resolvido: String
+                }
             }],
         }],
 })

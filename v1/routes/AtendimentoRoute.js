@@ -36,7 +36,7 @@ router.route('/paciente/:id')
 router.route('/finaliza/:id')
     .put(controller.finalizaAtendimento);
 
-router.route('/paciente/cpf/:cpf')
-    .get(controller.buscaPorCpfPaciente);
+router.route('/filtro')
+    .post(controller.filtraAtendimentos);
 
 exports.default = router;
