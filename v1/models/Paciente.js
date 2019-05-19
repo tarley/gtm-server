@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
 const pacienteSchema = new mongoose.Schema({
-    excluido: {
+    ativo: {
         type: Boolean,
-        default: false
+        default: true
     },
     nome: String,
     cpf: {
