@@ -157,6 +157,36 @@ class PacienteController {
         }
     }
 
+    async consultarPorNome(req, res) {
+        try {
+            mongoose.connect(process.env.DB_URL, {
+                useNewUrlParser: true
+            });
+
+            const nome = req.params.nome;
+
+            const query = Paciente.find({
+                'nome': {
+                    $regex: nome + '.*',
+                    $options: 'i'
+                }
+            });
+            const pacientes = await query.exec();
+
+            if (pacientes)
+                res.json(pacientes);
+            else
+                res.status(404).json({
+                    errors: [{
+                        msg: mensagens.PACIENTE_NAO_ENCONTRADO
+                    }]
+                });
+
+        } catch (err) {
+            res.status(500).json(err)
+        }
+    }
+
 
 }
 
