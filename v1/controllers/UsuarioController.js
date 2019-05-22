@@ -33,24 +33,6 @@ class UsuarioController {
         }
     }
 
-    async consultarPorEmail(req, res){
-        try {                
-            mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
-
-            const query = Usuario.findOne({email: req.params.email});
-            const user = await query.exec();
-
-            const alt = mongoose.Types.ObjectId(user._id);
-            
-            if(user && user.inativo == true){
-                res.json(alt);
-            }else
-                res.status(404).json({errors: [{msg: mensagens.USUARIO_NAO_ENCONTRADO}]});             
-        } catch(err) {
-            res.status(500).json(err);
-        }
-    }
-
     async inserir(req, res) {
         try {
             const erros = validationResult(req);
@@ -60,7 +42,7 @@ class UsuarioController {
                 
                 mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
 
-                const query = Usuario.findOne({email: req.params.email});
+                const query = Usuario.findOne({email: req.body.email});
                 const user = await query.exec();
 
                 if(user && user.inativo == true){
@@ -75,7 +57,7 @@ class UsuarioController {
                         if(result.n == 0){
                             return res.status(404).json(result);
                         }
-                        res.json(result);
+                        return res.json(result);
                 }else{
                     let newUsuario = new Usuario({
                         ...req.body
