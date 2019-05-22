@@ -9,7 +9,7 @@ router.route('/')
     .get(controller.consultar)
     .post(
         [
-            check('nome', mensagens.CAMPO_NOME_VAZIO).not().isEmpty(),
+            check('nome', mensagens.CAMPO_NOME_VAZIO).isLength({ min: 1 }),
             check('cpf', mensagens.CAMPO_CPF_MIN).isLength({ min: 14, max: 14 }),
             check('telefone', mensagens.CAMPO_TELEFONE_VAZIO).not().isEmpty(),
             check('telefone', mensagens.CAMPO_TELEFONE_MIN).isLength({ min: 10, max: 11 }),
@@ -24,7 +24,7 @@ router.route('/:id')
     .get(controller.consultarPorId)
     .put(
         [
-            check('nome', mensagens.CAMPO_NOME_VAZIO).not().isEmpty(),
+            check('nome', mensagens.CAMPO_NOME_VAZIO).isLength({ min: 1 }),
             check('cpf', mensagens.CAMPO_CPF_MIN).isLength({ min: 14, max: 14 }),
             check('telefone', mensagens.CAMPO_TELEFONE_VAZIO).not().isEmpty(),
             check('telefone', mensagens.CAMPO_TELEFONE_MIN).isLength({ min: 10, max: 11 }),
