@@ -14,12 +14,15 @@ class PacienteController {
                 useNewUrlParser: true
             });
 
-            const query = Paciente.find({},{
+            const query = Paciente.find({}, {
                 'nome': 1,
                 'sexo': 1,
                 'cpf': 1,
                 'ativo': 1
-            });
+            }, {
+                    limit: 50,
+                    sort: { _id: -1 }
+                });
             const pacientes = await query.exec();
             res.json(pacientes);
         } catch (err) {
