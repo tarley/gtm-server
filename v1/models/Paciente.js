@@ -1,9 +1,12 @@
 const mongoose = require('mongoose')
 
 const pacienteSchema = new mongoose.Schema({
-    ativo: {
-        type: Boolean,
-        default: true
+    situacao: {
+        ativo: {
+            type: Boolean,
+            default: true
+        },
+        motivo: String
     },
     nome: String,
     cpf: {
