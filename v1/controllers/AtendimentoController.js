@@ -19,6 +19,25 @@ class AtendimentoController {
         }
     }
 
+    async contaAtendimentosPaciente(req, res){
+        try {
+            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
+
+            const query = Atendimento.count({ idPaciente: req.params.id }, function (err, count){
+                if(err)
+                    console.log(err, count);
+            });
+            const totAtendimentos = await query.exec();
+
+            if(totAtendimentos == 1)
+                res.json(true);
+            else
+                res.json(false);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    }
+
     async filtraAtendimentos(req, res) {
         try {
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
