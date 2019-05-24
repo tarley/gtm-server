@@ -92,7 +92,7 @@ class PacienteController {
                         }]
                     });
 
-                if (result.nModified == 0)
+                if (result.n == 0)
                     return res.status(404).json(result);
 
                 return res.json(result);
