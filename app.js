@@ -2,8 +2,8 @@ const express = require('express');
 const rotasV1Usuarios = require('./v1/routes/UsuarioRoute');
 const rotasV1Pacientes = require('./v1/routes/PacienteRoute');
 const rotasV1Atendimentos = require('./v1/routes/AtendimentoRoute');
-const rotasV1Instituicao = require('./v1/routes/InstituicaoRoute')
-
+const rotasV1Instituicao = require('./v1/routes/InstituicaoRoute');
+const rotasV1Medicamento = require('./v1/routes/MedicamentoRoute');
 const app = express();
 
 require('dotenv').config();
@@ -49,6 +49,11 @@ app.use('/api/v1/atendimentos/', rotasV1Atendimentos.default);
  * Configura rotas de instituição
  */
 app.use('/api/v1/instituicao/', rotasV1Instituicao.default);
+
+/*
+ * Configura rotas de medicamento
+ */
+app.use('/api/v1/medicamento/', rotasV1Medicamento.default);
 
 const port = process.env.PORT || 3000;
 

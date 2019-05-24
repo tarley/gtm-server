@@ -24,7 +24,8 @@ module.exports = {
     ATENDIMENTO_NAO_ENCONTRADO: 'Atendimento não encontrado!',
     ERRO_ALTERAR_ATENDIMENTO_FINALIZADO: 'Não é possível editar um atendimento finalizado!',
     ATENDIMENTO_JA_FINALIZADO: 'O atendimento já está finalizado!',
-
+    QUADRO_GERAL_VAZIO: 'O quadro geral deve ser informado!',
+    
     //Mensagens Cadastros
     CAMPO_DESCRICAO_VAZIO: 'A descrição deve ser informada.'
 

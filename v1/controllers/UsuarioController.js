@@ -122,7 +122,7 @@ class UsuarioController {
     }
 
     validarPerfil(value) {
-        if (value !== "Administrador" && value !== "Normal" && value != "Academico")
+        if (value !== "Administrador" && value !== "Normal" && value != "Academico" && value != "Gestor da Instituicao")
             throw new Error(mensagens.PERFIL_INVALIDO_USUARIO);   
 
         return true;
