@@ -5,7 +5,6 @@ const atendimentoSchema = new mongoose.Schema({
         nomePaciente: String,
         dataAtendimento: Date,
         quadroGeral: String,
-        dataResultado: Date,
         experienciaSubjetiva: String, 
         finalizado: {
             type: Boolean,
@@ -14,6 +13,7 @@ const atendimentoSchema = new mongoose.Schema({
         doencas: [{
             nome: String,
             descricao: String,
+            dataResultado: Date,
             planoCuidado: {
                 objetivoTerapeutico: String,
                 condutas: {
