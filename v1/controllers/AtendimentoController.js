@@ -48,8 +48,10 @@ class AtendimentoController {
                 if (filtroAtendimento.criterioBusca == 'CPF' && filtroAtendimento.cpf) {
                     const queryPaciente = Paciente.findOne({ cpf: filtroAtendimento.cpf });
                         const paciente = await queryPaciente.exec();
-                        if (paciente) {
+                        if (paciente && paciente.nome) {
                             query.where('nomePaciente', paciente.nome);
+                        } else {
+                            query.where('nomePaciente', '');
                         }
                 } else if(filtroAtendimento.criterioBusca == 'Nome' && filtroAtendimento.nomePaciente) {
                     query.where('nomePaciente').regex('.*' + filtroAtendimento.nomePaciente + '.*');
