@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 
 const atendimentoSchema = new mongoose.Schema({
+        idUsuario: String,
+        idInstituicao: String,
         idPaciente: String,
         nomePaciente: String,
         dataAtendimento: Date,
