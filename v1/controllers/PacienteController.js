@@ -20,9 +20,11 @@ class PacienteController {
                 'cpf': 1,
                 'ativo': 1
             }, {
-                    limit: 50,
-                    sort: { _id: -1 }
-                });
+                limit: 50,
+                sort: {
+                    _id: -1
+                }
+            });
             const pacientes = await query.exec();
             res.json(pacientes);
         } catch (err) {
@@ -78,6 +80,13 @@ class PacienteController {
 
     alterar(req, res) {
         try {
+            const erros = validationResult(req);
+
+            if (!erros.isEmpty())
+                return res.status(422).json({
+                    errors: erros.array()
+                });
+
             mongoose.connect(process.env.DB_URL, {
                 useNewUrlParser: true
             });
