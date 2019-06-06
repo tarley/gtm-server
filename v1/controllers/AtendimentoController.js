@@ -108,6 +108,15 @@ class AtendimentoController {
         try {
             const erros = validationResult(req);
 
+            const idPaciente = req.body.idPaciente;
+            const query = Paciente.find({ _id: idPaciente });
+
+            const paciente = await query.exec();
+
+            if(!paciente.ativo){
+                return res.status(400).json({ errors: [{ msg: mensagens.ATENDIMENTO_PACIENTE_INATIVO }] });
+            }   
+
             if (!erros.isEmpty())
                 return res.status(422).json({ errors: erros.array() });
 

@@ -25,6 +25,7 @@ module.exports = {
     ERRO_ALTERAR_ATENDIMENTO_FINALIZADO: 'Não é possível editar um atendimento finalizado!',
     ATENDIMENTO_JA_FINALIZADO: 'O atendimento já está finalizado!',
     QUADRO_GERAL_VAZIO: 'O quadro geral deve ser informado!',
+    ATENDIMENTO_PACIENTE_INATIVO: 'Não é possível criar atendimento para pacientes Inativos no sistema!',
     
     //Mensagens Cadastros
     CAMPO_DESCRICAO_VAZIO: 'A descrição deve ser informada.'
