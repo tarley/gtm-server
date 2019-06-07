@@ -22,7 +22,7 @@ class MedicamentoController {
             let newMedicamento = new Medicamento({
                 ...req.body
             })
-
+            
             newMedicamento = await newMedicamento.save();
             res.json(newMedicamento);
         } catch (err) {
@@ -36,7 +36,7 @@ class MedicamentoController {
                 useNewUrlParser: true
             });
 
-            const query = Medicamento.find({}, {'descricao':1});
+            const query = Medicamento.find();
             const medicamento = await query.exec();
             res.json(medicamento);
         } catch (err) {
