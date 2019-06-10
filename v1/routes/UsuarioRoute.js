@@ -26,6 +26,15 @@ router.route('/:id')
             check('senha', mensagens.TAM_MIN_SENHA_USUARIO).isLength({ min: 5 }),
             check('perfil', mensagens.PERFIL_INVALIDO_USUARIO).custom((value) => controller.validarPerfil(value))
         ],
-        controller.alterar);   
+        controller.alterar);
+
+router.route('/login')
+        .post(
+            [
+                check('email', mensagens.EMAIL_INVALIDO).isEmail(),
+                check('senha', mensagens.TAM_MIN_SENHA_USUARIO).isString()
+            ],
+            controller.login
+        );
 
 exports.default = router;

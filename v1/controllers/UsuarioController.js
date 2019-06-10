@@ -1,9 +1,39 @@
 const mongoose = require('mongoose');
 const {validationResult} = require('express-validator/check');
+const jwt = require('jsonwebtoken');
 const Usuario = require('../models/Usuario');
 const mensagens = require('../utils/Mensagens');
 
 class UsuarioController {
+
+    async login(req, res, next){
+        try {
+            console.log(req.body)
+            const erros = validationResult(req);
+            
+            if(!erros.isEmpty())
+                return res.status(422).json({errors: erros.array()});
+            
+            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
+            
+            // TODO Tarley A senha está em texto plano no banco, devemos mudar para uma criptografia hash
+            const query = Usuario.findOne({email: req.body.email, senha: req.body.senha, inativo: false});
+            const usuario = await query.exec();
+            console.log('Usuário localidado =', usuario);//res.json(usuarios);
+
+            if(usuario) {
+                var token = jwt.sign({ id: usuario._id, perfil: usuario.perfil }, process.env.SECRET, {
+                    expiresIn: 60 * 15 // expira em 15 minutos
+                });
+
+                res.status(200).send({ auth: true, token: token });
+            } else {
+                res.status(500).send({ auth: false, msg: 'Login inválido!' });
+            }
+        } catch(err) {
+            res.status(500).json(err);
+        }
+    }
 
     async consultar(req, res) {
         try {
@@ -45,6 +75,7 @@ class UsuarioController {
                 const query = Usuario.findOne({email: req.body.email});
                 const user = await query.exec();
 
+                // TODO Tarley A senha está em texto plano no banco, devemos mudar para uma criptografia hash
                 if(user && user.inativo == true){
                     const result = await Usuario.updateOne(
                         {_id: mongoose.Types.ObjectId(user._id)},

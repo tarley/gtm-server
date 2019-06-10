@@ -6,7 +6,14 @@ const rotasV1Instituicao = require('./v1/routes/InstituicaoRoute');
 const rotasV1Medicamento = require('./v1/routes/MedicamentoRoute');
 const app = express();
 
-require('dotenv').config();
+var morgan = require('morgan')
+app.use(
+    morgan(
+        ':date[iso] :method | URL: :url | Status: :status | TamanhoRes: :res[content-length] | TamanhoReq: :req[content-length] | Tempo: :response-time ms',
+    ),
+);
+
+require("dotenv-safe").config();
 
 /*
  * Configura o body parser
