@@ -22,7 +22,7 @@ class UsuarioController {
             console.log('Usuário localidado =', usuario);//res.json(usuarios);
 
             if(usuario) {
-                var token = jwt.sign({ id: usuario._id, perfil: usuario.perfil }, process.env.SECRET, {
+                var token = jwt.sign({ id: usuario._id, perfil: usuario.perfil, nome: usuario.nome }, process.env.SECRET, {
                     expiresIn: 60 * 15 // expira em 15 minutos
                 });
 
