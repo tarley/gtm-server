@@ -6,7 +6,7 @@ const mensagens = require('../utils/Mensagens');
 const {check} = require('express-validator/check');
 
 router.route('/')
-    .get(controller.verificarToken, controller.consultar)
+    .get(controller.verificarToken, controller.validarPerfilProfissionalSaude, controller.consultar)
     .post(
         [
             check('nome', mensagens.TAM_MIN_NOME_USUARIO).isLength({ min: 5 }),
@@ -14,10 +14,10 @@ router.route('/')
             check('senha', mensagens.TAM_MIN_SENHA_USUARIO).isLength({ min: 5 }),
             check('perfil', mensagens.PERFIL_INVALIDO_USUARIO).custom((value) => controller.validarPerfil(value))
         ], 
-        controller.verificarToken, controller.inserir);
+        controller.verificarToken, controller.validarPerfilProfissionalSaude, controller.inserir);
 
 router.route('/:id')
-    .get(controller.verificarToken, controller.consultarPorId)
+    .get(controller.verificarToken, controller.validarPerfilAdministrador,  controller.consultarPorId)
     .delete(controller.verificarToken, controller.excluir)
     .put(
         [

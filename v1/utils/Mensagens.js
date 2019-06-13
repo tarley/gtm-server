@@ -28,7 +28,12 @@ module.exports = {
     ATENDIMENTO_PACIENTE_INATIVO: 'Não é possível criar atendimento para pacientes Inativos no sistema!',
     
     //Mensagens Cadastros
-    CAMPO_DESCRICAO_VAZIO: 'A descrição deve ser informada.'
+    CAMPO_DESCRICAO_VAZIO: 'A descrição deve ser informada.',
+
+    LOGIN_INVALIDO: 'Login inválido!',
+    TOKEN_NAO_INFORMADO: 'Token não informado.',
+    TOKEN_INVALIDO: 'Token inválido',
+    NAO_AUTORIZADO: 'Ação não autorizada'
 
 
 }

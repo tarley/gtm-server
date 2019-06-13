@@ -9,17 +9,38 @@ class UsuarioController {
     verificarToken(req, res, next){
         const token = req.headers['x-access-token'];
         if (!token)
-            return res.status(401).send({ auth: false, message: 'Token não informado.' });
+            return res.status(401).send({ auth: false, message: mensagens.TOKEN_NAO_INFORMADO });
         
         jwt.verify(token, process.env.SECRET, function(err, decoded) {
             if (err) 
-                return res.status(500).send({ auth: false, message: 'Token inválido.' });
+                return res.status(401).send({ auth: false, message: mensagens.TOKEN_INVALIDO });
             
             req.idUsuario = decoded.id;
             req.perfilUsuario = decoded.perfil;
             req.nomeUsuario = decoded.nome
             next();
         });
+    }
+
+    validarPerfilAdministrador(req, res, next) {
+        if (req.perfilUsuario !== "Administrador")
+            next();
+        else
+            res.status(401).send({ auth: false, message: mensagens.NAO_AUTORIZADO });
+    }
+
+    validarPerfilGestorInstituicao(req, res, next) {
+        if (req.perfilUsuario === "Administrador" || req.perfilUsuario === "Gestor da Instituicao")
+            next();
+        else
+            res.status(401).send({ auth: false, message: mensagens.NAO_AUTORIZADO });
+    }
+
+    validarPerfilProfissionalSaude(req, res, next) {
+        if (req.perfilUsuario === "Administrador" || req.perfilUsuario === "Gestor da Instituicao" || req.perfilUsuario === "Profissional Saude")
+            next();    
+        else
+            res.status(401).send({ auth: false, message: mensagens.NAO_AUTORIZADO });
     }
 
     async login(req, res, next){
@@ -35,16 +56,15 @@ class UsuarioController {
             // TODO Tarley A senha está em texto plano no banco, devemos mudar para uma criptografia hash
             const query = Usuario.findOne({email: req.body.email, senha: req.body.senha, inativo: false});
             const usuario = await query.exec();
-            console.log('Usuário localidado =', usuario);//res.json(usuarios);
-
+            
             if(usuario) {
                 var token = jwt.sign({ id: usuario._id, perfil: usuario.perfil, nome: usuario.nome }, process.env.SECRET, {
-                    expiresIn: 60 * 15 // expira em 15 minutos
+                    expiresIn: 60 * 60 * 24 // expira em 15 minutos
                 });
 
                 res.status(200).send({ auth: true, token: token });
             } else {
-                res.status(500).send({ auth: false, msg: 'Login inválido!' });
+                res.status(500).send({ auth: false, msg: mensagens.LOGIN_INVALIDO });
             }
         } catch(err) {
             res.status(500).json(err);
