@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const usuarioController = require('../controllers/UsuarioController.js');
 const controller = require('../controllers/PacienteController');
 const mensagens = require('../utils/Mensagens')
 
 const { check } = require('express-validator/check');
 
 router.route('/')
-    .get(controller.consultar)
+    .get(usuarioController.verificarToken, controller.consultar)
     .post(
         [
             check('nome', mensagens.CAMPO_NOME_VAZIO).isLength({ min: 1 }),
@@ -18,10 +19,11 @@ router.route('/')
             check('estadoCivil', mensagens.CAMPO_ESTADOCIVIL_VAZIO).not().isEmpty(),
             check('dadosComplementares.motivoConsulta', mensagens.CAMPO_MOTIVOCONSULTA_VAZIO).isLength({ min: 1 }),
         ],
+        usuarioController.verificarToken,
         controller.inserir);
 
 router.route('/:id')
-    .get(controller.consultarPorId)
+    .get(usuarioController.verificarToken, controller.consultarPorId)
     .put(
         [
             check('nome', mensagens.CAMPO_NOME_VAZIO).isLength({ min: 1 }),
@@ -33,12 +35,13 @@ router.route('/:id')
             check('estadoCivil', mensagens.CAMPO_ESTADOCIVIL_VAZIO).not().isEmpty(),
             check('dadosComplementares.motivoConsulta', mensagens.CAMPO_MOTIVOCONSULTA_VAZIO).isLength({ min: 1 }),
         ],
+        usuarioController.verificarToken,
         controller.alterar);
 
 router.route('/cpf/:cpf')
-    .get(controller.consultarPorCpf);
+    .get(usuarioController.verificarToken, controller.consultarPorCpf);
 
 router.route('/nome/:nome')
-    .get(controller.consultarPorNome)
+    .get(usuarioController.verificarToken, controller.consultarPorNome)
 
 exports.default = router;

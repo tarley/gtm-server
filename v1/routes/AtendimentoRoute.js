@@ -1,3 +1,4 @@
+const usuarioController = require('../controllers/UsuarioController.js');
 const controller = require('../controllers/AtendimentoController.js');
 const express = require('express');
 const router = express.Router();
@@ -6,7 +7,7 @@ const mensagens = require('../utils/Mensagens');
 const {check} = require('express-validator/check');
 
 router.route('/')
-    .get(controller.consultar)
+    .get(usuarioController.verificarToken, controller.consultar)
     .post([
         check('quadroGeral', mensagens.QUADRO_GERAL_VAZIO).not().isEmpty(),
         check('doencas').custom((value) => controller.validaAtributoDoenca(value, 'medicamento')),
@@ -15,11 +16,12 @@ router.route('/')
         check('doencas').custom((value) => controller.validaAtributoDoenca(value, 'seguranca')),
         check('doencas').custom((value) => controller.validaAtributoDoenca(value, 'dificuldadeUso')),
         check('doencas').custom((value) => controller.validaAtributoDoenca(value, 'prm')),
-    ], controller.inserir);
+    ], 
+    usuarioController.verificarToken, controller.inserir);
 
 router.route('/:id')
-    .get(controller.consultarPorId)
-    .delete(controller.excluir)
+    .get(usuarioController.verificarToken, controller.consultarPorId)
+    .delete(usuarioController.verificarToken, controller.excluir)
     .put([
         check('quadroGeral', mensagens.QUADRO_GERAL_VAZIO).not().isEmpty(),
         check('doencas').custom((value) => controller.validaAtributoDoenca(value, 'medicamento')),
@@ -28,18 +30,18 @@ router.route('/:id')
         check('doencas').custom((value) => controller.validaAtributoDoenca(value, 'seguranca')),
         check('doencas').custom((value) => controller.validaAtributoDoenca(value, 'dificuldadeUso')),
         check('doencas').custom((value) => controller.validaAtributoDoenca(value, 'prm')),
-    ],controller.alterar);
+    ], usuarioController.verificarToken, controller.alterar);
 
 router.route('/paciente/:id')
-    .get(controller.buscaUltimoAtendimentoPorIdPaciente);
+    .get(usuarioController.verificarToken, controller.buscaUltimoAtendimentoPorIdPaciente);
 
 router.route('/atendimento/:id')
-    .get(controller.contaAtendimentosPaciente);    
+    .get(usuarioController.verificarToken, controller.contaAtendimentosPaciente);    
 
 router.route('/finaliza/:id')
-    .put(controller.finalizaAtendimento);
+    .put(usuarioController.verificarToken, controller.finalizaAtendimento);
 
 router.route('/filtro')
-    .post(controller.filtraAtendimentos);
+    .post(usuarioController.verificarToken, controller.filtraAtendimentos);
 
 exports.default = router;

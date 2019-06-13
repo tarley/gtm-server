@@ -6,6 +6,22 @@ const mensagens = require('../utils/Mensagens');
 
 class UsuarioController {
 
+    verificarToken(req, res, next){
+        const token = req.headers['x-access-token'];
+        if (!token)
+            return res.status(401).send({ auth: false, message: 'Token não informado.' });
+        
+        jwt.verify(token, process.env.SECRET, function(err, decoded) {
+            if (err) 
+                return res.status(500).send({ auth: false, message: 'Token inválido.' });
+            
+            req.idUsuario = decoded.id;
+            req.perfilUsuario = decoded.perfil;
+            req.nomeUsuario = decoded.nome
+            next();
+        });
+    }
+
     async login(req, res, next){
         try {
             console.log(req.body)

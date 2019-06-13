@@ -1,17 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const usuarioController = require('../controllers/UsuarioController.js');
 const controller = require('../controllers/MedicamentoController');
 const mensagens = require('../utils/Mensagens')
 
 const {check} = require('express-validator/check');
 
 router.route('/')
-    .get(controller.consultar)
+    .get(usuarioController.verificarToken, controller.consultar)
     .post([
         check('descricao', mensagens.CAMPO_DESCRICAO_VAZIO).not().isEmpty()
-    ], controller.inserir);
+    ], usuarioController.verificarToken, controller.inserir);
 
 router.route('/:id')
-    .delete(controller.excluir)
+    .delete(usuarioController.verificarToken, controller.excluir)
     
 exports.default = router;
