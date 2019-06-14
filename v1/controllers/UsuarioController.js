@@ -18,7 +18,11 @@ class UsuarioController {
             req.idUsuario = decoded.id;
             req.perfilUsuario = decoded.perfil;
             req.nomeUsuario = decoded.nome
-            next();
+
+            if(req.route.path === '/token')
+                res.send({ auth: true });
+            else
+                next();
         });
     }
 

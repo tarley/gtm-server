@@ -16,6 +16,9 @@ router.route('/')
         ], 
         controller.verificarToken, controller.validarPerfilProfissionalSaude, controller.inserir);
 
+router.route('/token')
+        .get(controller.verificarToken)
+
 router.route('/:id')
     .get(controller.verificarToken, controller.validarPerfilAdministrador,  controller.consultarPorId)
     .delete(controller.verificarToken, controller.excluir)
