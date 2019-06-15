@@ -35,7 +35,7 @@ router.route('/login')
         .post(
             [
                 check('email', mensagens.EMAIL_INVALIDO).isEmail(),
-                check('senha', mensagens.TAM_MIN_SENHA_USUARIO).isString()
+                check('senha', mensagens.TAM_MIN_SENHA_USUARIO).isLength({ min: 5 })
             ],
             controller.login
         );
