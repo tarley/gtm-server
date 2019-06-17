@@ -27,7 +27,7 @@ class UsuarioController {
     }
 
     validarPerfilAdministrador(req, res, next) {
-        if (req.perfilUsuario !== "Administrador")
+        if (req.perfilUsuario === "Administrador")
             next();
         else
             res.status(401).send({ auth: false, message: mensagens.NAO_AUTORIZADO });
