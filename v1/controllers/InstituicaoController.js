@@ -44,6 +44,28 @@ class InstituicaoController {
         }
     }
 
+    async consultarPorId(req, res) {
+        try {
+            mongoose.connect(process.env.DB_URL, {
+                useNewUrlParser: true
+            });
+
+            const query = Instituicao.findById(req.params.id);
+            const instituicao = await query.exec();
+
+            if (instituicao)
+                res.json(instituicao);
+            else
+                res.status(404).json({
+                    errors: [{
+                        msg: mensagens.INSTITUICAO_NAO_ENCONTRADA
+                    }]
+                });
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    }
+
     excluir(req, res) {
         try {
             mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});

@@ -29,11 +29,12 @@ module.exports = {
     
     //Mensagens Cadastros
     CAMPO_DESCRICAO_VAZIO: 'A descrição deve ser informada.',
-
     LOGIN_INVALIDO: 'Login inválido!',
     TOKEN_NAO_INFORMADO: 'Token não informado.',
     TOKEN_INVALIDO: 'Token inválido',
-    NAO_AUTORIZADO: 'Ação não autorizada'
+    NAO_AUTORIZADO: 'Ação não autorizada',
 
+    //Mensagens Instituição
+    INSTITUICAO_NAO_ENCONTRADA: 'Instituição não encontrada.',
 
 }

@@ -13,6 +13,7 @@ router.route('/')
     ], usuarioController.verificarToken, controller.inserir);
 
 router.route('/:id')
+    .get(usuarioController.verificarToken, controller.consultarPorId)
     .delete(usuarioController.verificarToken, controller.excluir)
     
 exports.default = router;
