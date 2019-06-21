@@ -37,4 +37,7 @@ module.exports = {
     //Mensagens Instituição
     INSTITUICAO_NAO_ENCONTRADA: 'Instituição não encontrada.',
 
+    //Mensagens Medicamentos
+    MEDICAMENTO_NAO_ENCONTRADO: 'Medicamento não encontrado'
+
 }

@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const mensagens = require('../utils/Mensagens');
+
 const {
     validationResult
 } = require('express-validator/check');
@@ -59,6 +61,36 @@ class MedicamentoController {
             });
         } catch(err) {
             res.status(500).json(err);
+        }
+    }
+
+    async consultarPorNome(req, res) {
+        try {
+            mongoose.connect(process.env.DB_URL, {
+                useNewUrlParser: true
+            });
+
+            const descricao = req.params.descricao;
+
+            const query = Medicamento.find({
+                'descricao': {
+                    $regex: descricao + '.*',
+                    $options: 'i'
+                }
+            });
+            const medicamentos = await query.exec();
+
+            if (medicamentos)
+                res.json(medicamentos);
+            else
+                res.status(404).json({
+                    errors: [{
+                        msg: mensagens.MEDICAMENTO_NAO_ENCONTRADO
+                    }]
+                });
+
+        } catch (err) {
+            res.status(500).json(err)
         }
     }
 }

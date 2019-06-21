@@ -14,5 +14,8 @@ router.route('/')
 
 router.route('/:id')
     .delete(usuarioController.verificarToken, controller.excluir)
+
+router.route('/descricao/:descricao')
+    .get(usuarioController.verificarToken, controller.consultarPorNome)
     
 exports.default = router;
