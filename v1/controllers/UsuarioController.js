@@ -62,7 +62,7 @@ class UsuarioController {
             const usuario = await query.exec();
             
             if(usuario) {
-                var token = jwt.sign({ id: usuario._id, perfil: usuario.perfil, nome: usuario.nome }, process.env.SECRET, {
+                var token = jwt.sign({ id: usuario._id, perfil: usuario.perfil, nome: usuario.nome, idInstituicao: usuario.instituicao }, process.env.SECRET, {
                     expiresIn: 60 * 60 * 24 // expira em 15 minutos
                 });
 
