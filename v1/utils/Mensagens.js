@@ -7,6 +7,7 @@ module.exports = {
     EMAIL_JA_EXISTE: 'O E-mail já existe!',
     USUARIO_NAO_ENCONTRADO: 'Usuário não encontrado!',
     USUARIO_JA_INATIVO: 'Usuário já esta inativo.',
+    USUARIO_INSTITUICAO_OBRIGATORIO: 'A instituição deve ser informada!',
 
     //Mensagens Paciente
     PACIENTE_NAO_ENCONTRADO: 'Paciente não encontrado!',
