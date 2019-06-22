@@ -18,6 +18,7 @@ class UsuarioController {
             req.idUsuario = decoded.id;
             req.perfilUsuario = decoded.perfil;
             req.nomeUsuario = decoded.nome
+            req.idInstituicao = decoded.idInstituicao;
 
             if(req.route.path === '/token')
                 res.send({ auth: true });
@@ -49,7 +50,6 @@ class UsuarioController {
 
     async login(req, res, next){
         try {
-            console.log(req.body)
             const erros = validationResult(req);
             
             if(!erros.isEmpty())
