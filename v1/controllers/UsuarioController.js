@@ -4,6 +4,11 @@ const jwt = require('jsonwebtoken');
 const Usuario = require('../models/Usuario');
 const mensagens = require('../utils/Mensagens');
 
+const Administrador = 'Administrador';
+const GestorInstituicao = 'Gestor da Instituição';
+const ProfissionalSaude = 'Profissional Saúde';
+const Academico = 'Acadêmico';
+
 class UsuarioController {
 
     verificarToken(req, res, next){
@@ -28,21 +33,21 @@ class UsuarioController {
     }
 
     validarPerfilAdministrador(req, res, next) {
-        if (req.perfilUsuario === "Administrador")
+        if (req.perfilUsuario === Administrador)
             next();
         else
             res.status(401).send({ auth: false, message: mensagens.NAO_AUTORIZADO });
     }
 
     validarPerfilGestorInstituicao(req, res, next) {
-        if (req.perfilUsuario === "Administrador" || req.perfilUsuario === "Gestor da Instituicao")
+        if (req.perfilUsuario === Administrador || req.perfilUsuario === GestorInstituicao)
             next();
         else
             res.status(401).send({ auth: false, message: mensagens.NAO_AUTORIZADO });
     }
 
     validarPerfilProfissionalSaude(req, res, next) {
-        if (req.perfilUsuario === "Administrador" || req.perfilUsuario === "Gestor da Instituicao" || req.perfilUsuario === "Profissional Saude")
+        if (req.perfilUsuario === Administrador || req.perfilUsuario === GestorInstituicao || req.perfilUsuario === ProfissionalSaude)
             next();    
         else
             res.status(401).send({ auth: false, message: mensagens.NAO_AUTORIZADO });
@@ -62,7 +67,7 @@ class UsuarioController {
             const usuario = await query.exec();
             
             if(usuario) {
-                var token = jwt.sign({ id: usuario._id, perfil: usuario.perfil, nome: usuario.nome, idInstituicao: usuario.instituicao }, process.env.SECRET, {
+                var token = jwt.sign({ id: usuario._id, perfil: usuario.perfil, nome: usuario.nome, idInstituicao: usuario.idInstituicao }, process.env.SECRET, {
                     expiresIn: 60 * 60 * 24 // expira em 15 minutos
                 });
 
@@ -103,6 +108,11 @@ class UsuarioController {
         }
     }
 
+    consultarPerfis(req, res) {
+        console.log([Administrador, GestorInstituicao, ProfissionalSaude, Academico])
+        res.json([Administrador, GestorInstituicao, ProfissionalSaude, Academico]);
+    }
+
     async inserir(req, res) {
         try {
             const erros = validationResult(req);
@@ -118,17 +128,23 @@ class UsuarioController {
                 // TODO Tarley A senha está em texto plano no banco, devemos mudar para uma criptografia hash
                 if(user && user.inativo == true){
                     const result = await Usuario.updateOne(
-                        {_id: mongoose.Types.ObjectId(user._id)},
-                        {nome: req.body.nome,
-                         senha: req.body.senha,
-                         instituicao: req.body.instituicao,
-                         perfil: req.body.perfil,
-                         inativo: false});
-
-                        if(result.n == 0){
-                            return res.status(404).json(result);
+                        {
+                            _id: mongoose.Types.ObjectId(user._id)
+                        },
+                        {
+                            nome: req.body.nome,
+                            senha: req.body.senha,
+                            idInstituicao: req.body.idInstituicao,
+                            perfil: req.body.perfil,
+                            inativo: false
                         }
-                        return res.json(result);
+                    );
+
+                    if(result.n == 0){
+                        return res.status(404).json(result);
+                    }
+
+                    return res.json(result);
                 }else{
                     let newUsuario = new Usuario({
                         ...req.body

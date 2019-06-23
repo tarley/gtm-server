@@ -12,7 +12,7 @@ const usuarioSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  instituicao: String,
+  idInstituicao: String,
 })
 
 module.exports = mongoose.model('Usuario', usuarioSchema)

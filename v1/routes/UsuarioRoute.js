@@ -13,12 +13,15 @@ router.route('/')
             check('email', mensagens.EMAIL_INVALIDO).isEmail(),
             check('senha', mensagens.TAM_MIN_SENHA_USUARIO).isLength({ min: 5 }),
             check('perfil', mensagens.PERFIL_INVALIDO_USUARIO).custom((value) => controller.validarPerfil(value)),
-            check('instituicao', mensagens.USUARIO_INSTITUICAO_OBRIGATORIO).not().isEmpty(),
+            check('idInstituicao', mensagens.USUARIO_INSTITUICAO_OBRIGATORIO).not().isEmpty(),
         ], 
         controller.verificarToken, controller.validarPerfilProfissionalSaude, controller.inserir);
 
 router.route('/token')
         .get(controller.verificarToken)
+
+router.route('/perfis')
+        .get(controller.consultarPerfis)
 
 router.route('/:id')
     .get(controller.verificarToken, controller.validarPerfilAdministrador,  controller.consultarPorId)
