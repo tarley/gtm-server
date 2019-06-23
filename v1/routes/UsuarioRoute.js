@@ -21,7 +21,7 @@ router.route('/token')
         .get(controller.verificarToken)
 
 router.route('/perfis')
-        .get(controller.consultarPerfis)
+        .get(controller.verificarToken, controller.validarPerfilProfissionalSaude, controller.consultarPerfis)
 
 router.route('/:id')
     .get(controller.verificarToken, controller.validarPerfilAdministrador,  controller.consultarPorId)
