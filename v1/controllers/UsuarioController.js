@@ -136,7 +136,9 @@ class UsuarioController {
                             senha: req.body.senha,
                             idInstituicao: req.body.idInstituicao,
                             perfil: req.body.perfil,
-                            inativo: false
+                            inativo: false,
+                            alteradoPor: req.idUsuario,
+                            alteradoEm: new Date()
                         }
                     );
 
@@ -147,13 +149,17 @@ class UsuarioController {
                     return res.json(result);
                 }else{
                     let newUsuario = new Usuario({
-                        ...req.body
+                        ...req.body,
+
+                        criadoPor: req.idUsuario,
+                        criadoEm: new Date()
                     })
         
                     newUsuario = await newUsuario.save();
                     res.json(newUsuario);
                 }
         } catch(err) {
+            console.log(err)
             res.status(500).json(err);
         }
     }
@@ -171,7 +177,16 @@ class UsuarioController {
                 res.status(400).json({errors: [{msg: mensagens.USUARIO_JA_INATIVO}]});
             }
 
-            const result = await Usuario.updateOne({_id: id}, {inativo: true});
+            const result = await Usuario.updateOne(
+                {
+                    _id: id
+                }, 
+                {
+                    inativo: true,
+                    alteradoPor: req.idUsuario,
+                    alteradoEm: new Date()
+                }
+            );
 
             if(result.n == 0)
                 return res.status(404).json(result); 
@@ -192,7 +207,9 @@ class UsuarioController {
             mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
 
             const usuario = {
-                ...req.body
+                ...req.body,
+                alteradoPor: req.idUsuario,
+                alteradoEm: new Date()
             }
 
             const id = mongoose.Types.ObjectId(req.params.id);
@@ -204,6 +221,7 @@ class UsuarioController {
 
             res.json(result);
         } catch(err) {
+            console.log(err);
             res.status(500).json(err);
         }
     }
@@ -213,8 +231,7 @@ class UsuarioController {
             throw new Error(mensagens.PERFIL_INVALIDO_USUARIO);   
 
         return true;
-    } 
-
+    }
 }
 
 module.exports = new UsuarioController();

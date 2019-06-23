@@ -13,6 +13,10 @@ const usuarioSchema = new mongoose.Schema({
     default: false
   },
   idInstituicao: String,
+  criadoPor: String,
+  criadoEm: Date,
+  alteradoPor: String,
+  alteradoEm: Date
 })
 
 module.exports = mongoose.model('Usuario', usuarioSchema)
