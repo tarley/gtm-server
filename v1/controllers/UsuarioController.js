@@ -133,7 +133,6 @@ class UsuarioController {
                         {
                             nome: req.body.nome,
                             senha: req.body.senha,
-                            idInstituicao: req.body.idInstituicao,
                             perfil: req.body.perfil,
                             inativo: false,
                             alteradoPor: req.idUsuario,
@@ -149,9 +148,9 @@ class UsuarioController {
                 }else{
                     let newUsuario = new Usuario({
                         ...req.body,
-
                         criadoPor: req.idUsuario,
-                        criadoEm: new Date()
+                        criadoEm: new Date(),
+                        idInstituicao: req.idInstituicao
                     })
         
                     newUsuario = await newUsuario.save();
