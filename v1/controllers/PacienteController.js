@@ -101,7 +101,7 @@ class PacienteController {
             if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
                 const paciente = await Paciente.findOne({_id: id});
                 if(paciente && paciente.idInstituicao !== req.idInstituicao) {
-                    res.status(401).json({message: mensagens.ERRO_INSTITUICAO_DIFERENTE_REGISTRO});
+                    res.status(401).json({message: mensagens.ERRO_ALTERAR_INSTITUICAO_DIFERENTE_REGISTRO});
                 }
             }
 

@@ -184,7 +184,7 @@ class AtendimentoController {
             const atend = await query.exec();
             
             if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR && req.idInstituicao !== atend.idInstituicao) {
-                res.status(401).json({message: mensagens.ERRO_INSTITUICAO_DIFERENTE_REGISTRO});
+                res.status(401).json({message: mensagens.ERRO_ALTERAR_INSTITUICAO_DIFERENTE_REGISTRO});
             }
 
             if (atend && atend.finalizado == true) {

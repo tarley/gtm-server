@@ -205,7 +205,7 @@ class UsuarioController {
             if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
                 const usuarioEncontrado = await Usuario.findOne({ _id: id});
                 if(req.idInstituicao !== usuarioEncontrado.idInstituicao) {
-                    res.status(401).json({message: mensagens.ERRO_INSTITUICAO_DIFERENTE_REGISTRO});
+                    res.status(401).json({message: mensagens.ERRO_ALTERAR_INSTITUICAO_DIFERENTE_REGISTRO});
                 }
             }
 
