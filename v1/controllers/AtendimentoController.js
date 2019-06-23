@@ -123,7 +123,10 @@ class AtendimentoController {
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             let newAtendimento = new Atendimento({
-                ...req.body
+                ...req.body,
+                idInstituicao: req.idInstituicao,
+                criadoPor: req.idUsuario,
+                criadoEm: new Date()
             })
             newAtendimento = await newAtendimento.save();
             res.json(newAtendimento);
@@ -184,7 +187,10 @@ class AtendimentoController {
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             const atendimento = {
-                ...req.body
+                ...req.body,
+                idInstituicao: req.idInstituicao,
+                alteradoPor: req.idUsuario,
+                alteradoEm: new Date()
             }
 
             const result = await Atendimento.updateOne({ _id: id }, atendimento);

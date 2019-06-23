@@ -1,8 +1,6 @@
 const mongoose = require('mongoose')
 
 const atendimentoSchema = new mongoose.Schema({
-        idUsuario: String,
-        idInstituicao: String,
         idPaciente: String,
         nomePaciente: String,
         dataAtendimento: Date,
@@ -42,6 +40,11 @@ const atendimentoSchema = new mongoose.Schema({
                 }
             }],
         }],
+        criadoPor: String,
+        criadoEm: Date,
+        idInstituicao: String,
+        alteradoPor: String,
+        alteradoEm: Date
 })
 
 module.exports = mongoose.model('Atendimento', atendimentoSchema)

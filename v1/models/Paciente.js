@@ -72,8 +72,12 @@ const pacienteSchema = new mongoose.Schema({
         jantar: String,
         dorme: String,
         observacaoRotina: String
-    }
-
+    },
+    criadoPor: String,
+    criadoEm: Date,
+    idInstituicao: String,
+    alteradoPor: String,
+    alteradoEm: Date
 })
 
 module.exports = mongoose.model('Paciente', pacienteSchema)

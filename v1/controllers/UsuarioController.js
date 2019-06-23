@@ -109,7 +109,6 @@ class UsuarioController {
     }
 
     consultarPerfis(req, res) {
-        console.log([Administrador, GestorInstituicao, ProfissionalSaude, Academico])
         res.json([Administrador, GestorInstituicao, ProfissionalSaude, Academico]);
     }
 

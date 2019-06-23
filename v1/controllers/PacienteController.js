@@ -68,7 +68,10 @@ class PacienteController {
             });
 
             let newPaciente = new Paciente({
-                ...req.body
+                ...req.body,
+                idInstituicao: req.idInstituicao,
+                criadoPor: req.idUsuario,
+                criadoEm: new Date()
             })
 
             newPaciente = await newPaciente.save();
@@ -93,7 +96,12 @@ class PacienteController {
 
             Paciente.updateOne({
                 _id: mongoose.Types.ObjectId(req.params.id)
-            }, req.body, (err, result) => {
+            }, {
+                ...req.body,
+                alteradoPor: req.idUsuario,
+                alteradoEm: new Date()
+            
+            }, (err, result) => {
                 if (err)
                     return res.status(500).json({
                         errors: [{
