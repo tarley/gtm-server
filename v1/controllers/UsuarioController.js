@@ -200,14 +200,20 @@ class UsuarioController {
 
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
+            const id = mongoose.Types.ObjectId(req.params.id);
+            
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
+                const usuarioEncontrado = await Usuario.findOne({ _id: id});
+                if(req.idInstituicao !== usuarioEncontrado.idInstituicao) {
+                    res.status(401).json({message: mensagens.ERRO_INSTITUICAO_DIFERENTE_REGISTRO});
+                }
+            }
+
             const usuario = {
                 ...req.body,
                 alteradoPor: req.idUsuario,
                 alteradoEm: new Date()
             }
-
-            const id = mongoose.Types.ObjectId(req.params.id);
-
             const result = await Usuario.updateOne({ _id: id }, usuario);
 
             if (result.n == 0)

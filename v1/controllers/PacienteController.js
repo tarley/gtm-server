@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const mensagens = require('../utils/Mensagens');
+const perfilUsuario = require('../utils/PerfilUsuario');
+
 const {
     validationResult
 } = require('express-validator/check');
@@ -81,7 +83,7 @@ class PacienteController {
         }
     }
 
-    alterar(req, res) {
+    async alterar(req, res) {
         try {
             const erros = validationResult(req);
 
@@ -94,8 +96,17 @@ class PacienteController {
                 useNewUrlParser: true
             });
 
+            const id = mongoose.Types.ObjectId(req.params.id);
+
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
+                const paciente = await Paciente.findOne({_id: id});
+                if(paciente && paciente.idInstituicao !== req.idInstituicao) {
+                    res.status(401).json({message: mensagens.ERRO_INSTITUICAO_DIFERENTE_REGISTRO});
+                }
+            }
+
             Paciente.updateOne({
-                _id: mongoose.Types.ObjectId(req.params.id)
+                _id: id
             }, {
                 ...req.body,
                 alteradoPor: req.idUsuario,

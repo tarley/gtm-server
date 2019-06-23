@@ -1,4 +1,7 @@
 module.exports = {
+    //Mensagens Gerais
+    ERRO_INSTITUICAO_DIFERENTE_REGISTRO: 'Usuários dessa instituição não podem alterar esse registro.',
+
     //Mensagens Usuario
     TAM_MIN_NOME_USUARIO: 'O nome deve ter no mínimo 5 caracteres!',
     TAM_MIN_SENHA_USUARIO: 'A senha deve ter no mínimo 5 caracteres!',

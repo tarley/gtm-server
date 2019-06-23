@@ -4,7 +4,7 @@ const { validationResult } = require('express-validator/check');
 const Atendimento = require('../models/Atendimento');
 const Paciente = require('../models/Paciente');
 const mensagens = require('../utils/Mensagens');
-
+const perfilUsuario = require('../utils/PerfilUsuario');
 class AtendimentoController {
 
     async buscaUltimoAtendimentoPorIdPaciente(req, res) {
@@ -171,14 +171,6 @@ class AtendimentoController {
 
     async alterar(req, res) {
         try {
-            const id = mongoose.Types.ObjectId(req.params.id);
-            const query = Atendimento.findOne({ _id: id });
-
-            const atend = await query.exec();
-            if (atend && atend.finalizado == true) {
-                res.status(400).json({ errors: [{ msg: mensagens.ERRO_ALTERAR_ATENDIMENTO_FINALIZADO }] });
-            }
-
             const erros = validationResult(req);
 
             if (!erros.isEmpty())
@@ -186,9 +178,21 @@ class AtendimentoController {
 
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
+            const id = mongoose.Types.ObjectId(req.params.id);
+            const query = Atendimento.findOne({ _id: id });
+
+            const atend = await query.exec();
+            
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR && req.idInstituicao !== atend.idInstituicao) {
+                res.status(401).json({message: mensagens.ERRO_INSTITUICAO_DIFERENTE_REGISTRO});
+            }
+
+            if (atend && atend.finalizado == true) {
+                res.status(400).json({ errors: [{ msg: mensagens.ERRO_ALTERAR_ATENDIMENTO_FINALIZADO }] });
+            }
+
             const atendimento = {
                 ...req.body,
-                idInstituicao: req.idInstituicao,
                 alteradoPor: req.idUsuario,
                 alteradoEm: new Date()
             }
