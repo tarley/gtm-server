@@ -22,7 +22,9 @@ class MedicamentoController {
             });
 
             let newMedicamento = new Medicamento({
-                ...req.body
+                ...req.body,
+                criadoPor: req.idUsuario,
+                criadoEm: new Date()
             })
             
             newMedicamento = await newMedicamento.save();

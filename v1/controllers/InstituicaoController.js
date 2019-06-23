@@ -20,7 +20,10 @@ class InstituicaoController {
             });
 
             let newInstituicao = new Instituicao({
-                ...req.body
+                ...req.body,
+                criadoPor: req.idUsuario,
+                criadoEm: new Date(),
+                idInstituicao: req.idInstituicao
             })
 
             newInstituicao = await newInstituicao.save();
