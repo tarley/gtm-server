@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
-const {
-    validationResult
-} = require('express-validator/check');
-
+const { validationResult } = require('express-validator/check');
 const Instituicao = require('../models/Instituicao');
+const perfilUsuario = require('../utils/PerfilUsuario');
+const mensagens = require('../utils/Mensagens');
 
 class InstituicaoController {
     async inserir(req, res) {
@@ -23,7 +22,6 @@ class InstituicaoController {
                 ...req.body,
                 criadoPor: req.idUsuario,
                 criadoEm: new Date(),
-                idInstituicao: req.idInstituicao
             })
 
             newInstituicao = await newInstituicao.save();
@@ -40,6 +38,11 @@ class InstituicaoController {
             });
 
             const query = Instituicao.find({}, {'descricao':1});
+
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
+                query.where('idInstituicao', req.idInstituicao);
+            }
+
             const instituicao = await query.exec();
             res.json(instituicao);
         } catch (err) {
@@ -54,6 +57,11 @@ class InstituicaoController {
             });
 
             const query = Instituicao.findById(req.params.id);
+
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR && req.idInstituicao !== req.params.id) {
+                res.status(401).json({message: mensagens.ERRO_CONSULTAR_OUTRA_INSTITUICAO})
+            }
+
             const instituicao = await query.exec();
 
             if (instituicao)
@@ -73,6 +81,10 @@ class InstituicaoController {
         try {
             mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
             
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR && req.idInstituicao !== req.params.id) {
+                res.status(401).json({message: mensagens.ERRO_EXCLUIR_INSTITUICAO_DIFERENTE_REGISTRO});
+            }
+
             Instituicao.deleteOne({_id: mongoose.Types.ObjectId(req.params.id)}, (err, result) => {
                 if(err)
                     return res.status(500).json({errors: [{...err}]});

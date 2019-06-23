@@ -12,6 +12,11 @@ class AtendimentoController {
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             const query = Atendimento.findOne({ idPaciente: req.params.id }).sort({ dataAtendimento: -1 });
+
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
+                query.where('idInstituicao', req.idInstituicao);
+            }
+
             const atendimento = await query.exec();
             res.json(atendimento);
         } catch (err) {
@@ -23,10 +28,15 @@ class AtendimentoController {
         try {
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
-            const query = Atendimento.count({ idPaciente: req.params.id }, function (err, count){
-                if(err)
-                    console.log(err, count);
-            });
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
+                const paciente = Paciente.findOne({_id: req.params.id})
+                if(paciente && paciente.idInstituicao !== req.idInstituicao) {
+                    res.status(401).json({message: mensagens.ERRO_CONSULTAR_OUTRA_INSTITUICAO});
+                    return
+                }
+            }
+
+            const query = Atendimento.count({ idPaciente: req.params.id });
             const totAtendimentos = await query.exec();
 
             if(totAtendimentos == 1)
@@ -67,6 +77,10 @@ class AtendimentoController {
                 }
             }
 
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
+                query.where('idInstituicao', req.idInstituicao);
+            }
+
             const atendimentos = await query.exec();
 
             res.json(atendimentos);
@@ -81,6 +95,11 @@ class AtendimentoController {
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             const query = Atendimento.find().sort({ dataAtendimento: -1 }).limit(50);
+
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
+                query.where('idInstituicao', req.idInstituicao);
+            }
+
             const atendimentos = await query.exec();
             res.json(atendimentos);
         } catch (err) {
@@ -93,10 +112,15 @@ class AtendimentoController {
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             const query = Atendimento.findById(req.params.id);
-            const atendimentos = await query.exec();
+            const atendimento = await query.exec();
 
-            if (atendimentos)
-                res.json(atendimentos);
+            if (atendimento) {
+                if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR && atendimento.idInstituicao !== req.idInstituicao) {
+                    res.status(401).json({message: mensagens.ERRO_CONSULTAR_OUTRA_INSTITUICAO})
+                    return
+                }
+                res.json(atendimento);
+            }
             else
                 res.status(404).json({ errors: [{ msg: mensagens.ATENDIMENTO_NAO_ENCONTRADO }] });
         } catch (err) {
@@ -108,6 +132,9 @@ class AtendimentoController {
         try {
             const erros = validationResult(req);
 
+            if (!erros.isEmpty())
+                return res.status(422).json({ errors: erros.array() });
+
             const idPaciente = req.body.idPaciente;
             const query = Paciente.findOne({ _id: idPaciente });
 
@@ -116,9 +143,6 @@ class AtendimentoController {
             if(!paciente.ativo){
                 return res.status(400).json({ errors: [{ msg: mensagens.ATENDIMENTO_PACIENTE_INATIVO }] });
             }   
-
-            if (!erros.isEmpty())
-                return res.status(422).json({ errors: erros.array() });
 
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
@@ -139,7 +163,17 @@ class AtendimentoController {
         try {
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
-            Atendimento.deleteOne({ _id: mongoose.Types.ObjectId(req.params.id) }, (err, result) => {
+            const id = mongoose.Types.ObjectId(req.params.id);
+
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
+                const atendimento = Atendimento.findOne({_id: id});
+                if(atendimento && atendimento.idInstituicao !== req.idInstituicao) {
+                    res.status(401).json({message: mensagens.ERRO_EXCLUIR_INSTITUICAO_DIFERENTE_REGISTRO});
+                    return
+                }
+            }
+
+            Atendimento.deleteOne({ _id: id }, (err, result) => {
                 if (err)
                     return res.status(500).json({ errors: [{ ...err }] });
 
@@ -185,6 +219,7 @@ class AtendimentoController {
             
             if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR && req.idInstituicao !== atend.idInstituicao) {
                 res.status(401).json({message: mensagens.ERRO_ALTERAR_INSTITUICAO_DIFERENTE_REGISTRO});
+                return
             }
 
             if (atend && atend.finalizado == true) {
@@ -217,6 +252,11 @@ class AtendimentoController {
             const query = Atendimento.findOne({ _id: id });
 
             const atend = await query.exec();
+
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR && atend.idInstituicao !== req.idInstituicao) {
+                res.status(401).json({message: mensagens.ERRO_ALTERAR_INSTITUICAO_DIFERENTE_REGISTRO});
+            }
+
             if (atend && atend.finalizado == true) {
                 res.status(400).json({ errors: [{ msg: mensagens.ATENDIMENTO_JA_FINALIZADO }] });
             }

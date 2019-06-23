@@ -5,7 +5,6 @@ const instituicaoSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
-    idInstituicao: String,
     criadoPor: String,
     criadoEm: Date,
 })

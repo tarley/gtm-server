@@ -81,6 +81,11 @@ class UsuarioController {
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             const query = Usuario.find({ inativo: false });
+
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
+                query.where('idInstituicao', req.idInstituicao);
+            }
+
             const usuarios = await query.exec();
             res.json(usuarios);
         } catch (err) {
@@ -95,8 +100,12 @@ class UsuarioController {
             const query = Usuario.findById(req.params.id);
             const usuario = await query.exec();
 
-            if (usuario)
+            if (usuario) {
+                if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR && usuario.idInstituicao !== req.idInstituicao) {
+                    res.status(401).json({message: mensagens.ERRO_CONSULTAR_OUTRA_INSTITUICAO});
+                }
                 res.json(usuario);
+            }
             else
                 res.status(404).json({ errors: [{ msg: mensagens.USUARIO_NAO_ENCONTRADO }] });
         } catch (err) {
@@ -166,6 +175,10 @@ class UsuarioController {
             const query = Usuario.findOne({ _id: id });
 
             const user = await query.exec();
+
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR && req.idInstituicao !== user.idInstituicao) {
+                res.status(401).json({message: mensagens.ERRO_EXCLUIR_INSTITUICAO_DIFERENTE_REGISTRO})
+            }
 
             if (user && user.inativo == true) {
                 res.status(400).json({ errors: [{ msg: mensagens.USUARIO_JA_INATIVO }] });

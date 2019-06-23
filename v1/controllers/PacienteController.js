@@ -27,6 +27,11 @@ class PacienteController {
                     _id: -1
                 }
             });
+
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
+                query.where('idInstituicao', req.idInstituicao);
+            }
+
             const pacientes = await query.exec();
             res.json(pacientes);
         } catch (err) {
@@ -41,10 +46,15 @@ class PacienteController {
             });
 
             const query = Paciente.findById(req.params.id);
+
             const paciente = await query.exec();
 
-            if (paciente)
+            if (paciente) {
+                if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR && paciente.idInstituicao !== req.idInstituicao) {
+                    res.status(401).json({message: mensagens.ERRO_CONSULTAR_OUTRA_INSTITUICAO})
+                }
                 res.json(paciente);
+            }
             else
                 res.status(404).json({
                     errors: [{
@@ -143,6 +153,11 @@ class PacienteController {
                     $regex: cpf + '.*'
                 }
             });
+
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
+                query.where('idInstituicao', req.idInstituicao);
+            }
+
             const pacientes = await query.exec();
 
             if (pacientes)
@@ -173,6 +188,11 @@ class PacienteController {
                     $options: 'i'
                 }
             });
+
+            if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
+                query.where('idInstituicao', req.idInstituicao);
+            }
+
             const pacientes = await query.exec();
 
             if (pacientes)
