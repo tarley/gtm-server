@@ -79,7 +79,7 @@ class MedicamentoController {
                     $regex: descricao + '.*',
                     $options: 'i'
                 }
-            });
+            },{},{limit: 50});
             const medicamentos = await query.exec();
 
             if (medicamentos)
