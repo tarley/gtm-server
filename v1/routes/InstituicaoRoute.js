@@ -7,13 +7,13 @@ const mensagens = require('../utils/Mensagens')
 const {check} = require('express-validator/check');
 
 router.route('/')
-    .get(usuarioController.verificarToken, controller.consultar)
+    .get(usuarioController.verificarToken, usuarioController.validarPerfilAdministrador, controller.consultar)
     .post([
         check('descricao', mensagens.CAMPO_DESCRICAO_VAZIO).not().isEmpty()
-    ], usuarioController.verificarToken, controller.inserir);
+    ], usuarioController.verificarToken, usuarioController.validarPerfilAdministrador, controller.inserir);
 
 router.route('/:id')
-    .get(usuarioController.verificarToken, controller.consultarPorId)
-    .delete(usuarioController.verificarToken, controller.excluir)
+    .get(usuarioController.verificarToken, usuarioController.validarPerfilAdministrador, controller.consultarPorId)
+    .delete(usuarioController.verificarToken, usuarioController.validarPerfilAdministrador, controller.excluir)
     
 exports.default = router;

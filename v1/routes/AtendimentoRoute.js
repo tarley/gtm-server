@@ -39,7 +39,7 @@ router.route('/atendimento/:id')
     .get(usuarioController.verificarToken, controller.contaAtendimentosPaciente);    
 
 router.route('/finaliza/:id')
-    .put(usuarioController.verificarToken, controller.finalizaAtendimento);
+    .put(usuarioController.verificarToken, usuarioController.validarPerfilProfissionalSaude, controller.finalizaAtendimento);
 
 router.route('/filtro')
     .post(usuarioController.verificarToken, controller.filtraAtendimentos);

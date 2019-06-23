@@ -24,8 +24,8 @@ router.route('/perfis')
         .get(controller.verificarToken, controller.validarPerfilProfissionalSaude, controller.consultarPerfis)
 
 router.route('/:id')
-    .get(controller.verificarToken, controller.validarPerfilAdministrador,  controller.consultarPorId)
-    .delete(controller.verificarToken, controller.excluir)
+    .get(controller.verificarToken, controller.validarPerfilProfissionalSaude,  controller.consultarPorId)
+    .delete(controller.verificarToken, controller.validarPerfilProfissionalSaude, controller.excluir)
     .put(
         [
             check('nome', mensagens.TAM_MIN_NOME_USUARIO).isLength({ min: 5 }),
@@ -34,7 +34,7 @@ router.route('/:id')
             check('perfil', mensagens.PERFIL_INVALIDO_USUARIO).custom((value) => controller.validarPerfil(value)),
             check('idInstituicao', mensagens.USUARIO_INSTITUICAO_OBRIGATORIO).not().isEmpty(),
         ],
-        controller.verificarToken, controller.alterar);
+        controller.verificarToken, controller.validarPerfilProfissionalSaude, controller.alterar);
 
 router.route('/login')
         .post(
