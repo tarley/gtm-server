@@ -40,7 +40,7 @@ class InstituicaoController {
             const query = Instituicao.find({}, {'descricao':1});
 
             if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
-                query.where('idInstituicao', req.idInstituicao);
+                query.where('_id', req.idInstituicao);
             }
 
             const instituicao = await query.exec();

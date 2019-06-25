@@ -125,7 +125,7 @@ class UsuarioController {
                 return res.status(422).json({ errors: erros.array() });
 
             mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
-
+            
             const query = Usuario.findOne({ email: req.body.email });
             const user = await query.exec();
 
@@ -155,7 +155,6 @@ class UsuarioController {
                     ...req.body,
                     criadoPor: req.idUsuario,
                     criadoEm: new Date(),
-                    idInstituicao: req.idInstituicao
                 })
 
                 newUsuario = await newUsuario.save();
@@ -221,7 +220,7 @@ class UsuarioController {
                     res.status(401).json({message: mensagens.ERRO_ALTERAR_INSTITUICAO_DIFERENTE_REGISTRO});
                 }
             }
-
+            
             const usuario = {
                 ...req.body,
                 alteradoPor: req.idUsuario,
