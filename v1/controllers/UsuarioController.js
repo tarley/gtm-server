@@ -56,8 +56,6 @@ class UsuarioController {
             if (!erros.isEmpty())
                 return res.status(422).json({ errors: erros.array() });
 
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
-
             // TODO Tarley A senha está em texto plano no banco, devemos mudar para uma criptografia hash
             const query = Usuario.findOne({ email: req.body.email, senha: req.body.senha, inativo: false });
             const usuario = await query.exec();
@@ -78,8 +76,6 @@ class UsuarioController {
 
     async consultar(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
-
             const query = Usuario.find({ inativo: false });
 
             if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
@@ -95,8 +91,6 @@ class UsuarioController {
 
     async consultarPorId(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
-
             const query = Usuario.findById(req.params.id);
             const usuario = await query.exec();
 
@@ -124,8 +118,6 @@ class UsuarioController {
             if (!erros.isEmpty())
                 return res.status(422).json({ errors: erros.array() });
 
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
-            
             const query = Usuario.findOne({ email: req.body.email });
             const user = await query.exec();
 
@@ -168,7 +160,6 @@ class UsuarioController {
 
     async excluir(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
             const id = mongoose.Types.ObjectId(req.params.id);
 
             const query = Usuario.findOne({ _id: id });
@@ -209,8 +200,6 @@ class UsuarioController {
 
             if (!erros.isEmpty())
                 return res.status(422).json({ errors: erros.array() });
-
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
 
             const id = mongoose.Types.ObjectId(req.params.id);
             

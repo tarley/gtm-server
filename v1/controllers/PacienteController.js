@@ -9,13 +9,8 @@ const {
 const Paciente = require('../models/Paciente');
 
 class PacienteController {
-
     async consultar(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, {
-                useNewUrlParser: true
-            });
-
             const query = Paciente.find({}, {
                 'nome': 1,
                 'sexo': 1,
@@ -41,10 +36,6 @@ class PacienteController {
 
     async consultarPorId(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, {
-                useNewUrlParser: true
-            });
-
             const query = Paciente.findById(req.params.id);
 
             const paciente = await query.exec();
@@ -75,10 +66,6 @@ class PacienteController {
                     errors: erros.array()
                 });
 
-            mongoose.connect(process.env.DB_URL, {
-                useNewUrlParser: true
-            });
-
             let newPaciente = new Paciente({
                 ...req.body,
                 idInstituicao: req.idInstituicao,
@@ -101,10 +88,6 @@ class PacienteController {
                 return res.status(422).json({
                     errors: erros.array()
                 });
-
-            mongoose.connect(process.env.DB_URL, {
-                useNewUrlParser: true
-            });
 
             const id = mongoose.Types.ObjectId(req.params.id);
 
@@ -142,10 +125,6 @@ class PacienteController {
 
     async consultarPorCpf(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, {
-                useNewUrlParser: true
-            });
-
             const cpf = req.params.cpf;
 
             const query = Paciente.find({
@@ -176,10 +155,6 @@ class PacienteController {
 
     async consultarPorNome(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, {
-                useNewUrlParser: true
-            });
-
             const nome = req.params.nome;
 
             const query = Paciente.find({

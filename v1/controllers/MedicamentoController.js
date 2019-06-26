@@ -17,10 +17,6 @@ class MedicamentoController {
                     errors: erros.array()
                 });
 
-            mongoose.connect(process.env.DB_URL, {
-                useNewUrlParser: true
-            });
-
             let newMedicamento = new Medicamento({
                 ...req.body,
                 criadoPor: req.idUsuario,
@@ -36,10 +32,6 @@ class MedicamentoController {
 
     async consultar(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, {
-                useNewUrlParser: true
-            });
-
             const query = Medicamento.find();
             const medicamento = await query.exec();
             res.json(medicamento);
@@ -50,8 +42,6 @@ class MedicamentoController {
 
     excluir(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
-            
             Medicamento.deleteOne({_id: mongoose.Types.ObjectId(req.params.id)}, (err, result) => {
                 if(err)
                     return res.status(500).json({errors: [{...err}]});
@@ -68,10 +58,6 @@ class MedicamentoController {
 
     async consultarPorNome(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, {
-                useNewUrlParser: true
-            });
-
             const descricao = req.params.descricao;
 
             const query = Medicamento.find({

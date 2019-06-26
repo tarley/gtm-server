@@ -9,8 +9,6 @@ class AtendimentoController {
 
     async buscaUltimoAtendimentoPorIdPaciente(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
-
             const query = Atendimento.findOne({ idPaciente: req.params.id }).sort({ dataAtendimento: -1 });
 
             if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
@@ -26,8 +24,7 @@ class AtendimentoController {
 
     async contaAtendimentosPaciente(req, res){
         try {
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
-
+            
             if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
                 const paciente = Paciente.findOne({_id: req.params.id})
                 if(paciente && paciente.idInstituicao !== req.idInstituicao) {
@@ -50,7 +47,6 @@ class AtendimentoController {
 
     async filtraAtendimentos(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
             const filtroAtendimento = req.body;
             const query = Atendimento.find().sort({ dataAtendimento: -1 });
 
@@ -92,8 +88,7 @@ class AtendimentoController {
 
     async consultar(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
-
+            
             const query = Atendimento.find().sort({ dataAtendimento: -1 }).limit(50);
 
             if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
@@ -109,8 +104,7 @@ class AtendimentoController {
 
     async consultarPorId(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
-
+            
             const query = Atendimento.findById(req.params.id);
             const atendimento = await query.exec();
 
@@ -144,8 +138,6 @@ class AtendimentoController {
                 return res.status(400).json({ errors: [{ msg: mensagens.ATENDIMENTO_PACIENTE_INATIVO }] });
             }   
 
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
-
             let newAtendimento = new Atendimento({
                 ...req.body,
                 idInstituicao: req.idInstituicao,
@@ -161,8 +153,7 @@ class AtendimentoController {
 
     excluir(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
-
+            
             const id = mongoose.Types.ObjectId(req.params.id);
 
             if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
@@ -210,8 +201,7 @@ class AtendimentoController {
             if (!erros.isEmpty())
                 return res.status(422).json({ errors: erros.array() });
 
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
-
+            
             const id = mongoose.Types.ObjectId(req.params.id);
             const query = Atendimento.findOne({ _id: id });
 
@@ -245,8 +235,7 @@ class AtendimentoController {
 
     async finalizaAtendimento(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });
-
+            
             const id = mongoose.Types.ObjectId(req.params.id);
 
             const query = Atendimento.findOne({ _id: id });
