@@ -26,7 +26,7 @@ class AtendimentoController {
         try {
             
             if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
-                const paciente = Paciente.findOne({_id: req.params.id})
+                const paciente = await Paciente.findOne({_id: req.params.id})
                 if(paciente && paciente.idInstituicao !== req.idInstituicao) {
                     res.status(401).json({message: mensagens.ERRO_CONSULTAR_OUTRA_INSTITUICAO});
                     return
