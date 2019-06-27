@@ -14,10 +14,6 @@ class InstituicaoController {
                     errors: erros.array()
                 });
 
-            mongoose.connect(process.env.DB_URL, {
-                useNewUrlParser: true
-            });
-
             let newInstituicao = new Instituicao({
                 ...req.body,
                 criadoPor: req.idUsuario,
@@ -33,10 +29,6 @@ class InstituicaoController {
 
     async consultar(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, {
-                useNewUrlParser: true
-            });
-
             const query = Instituicao.find({}, {'descricao':1});
 
             if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
@@ -52,9 +44,6 @@ class InstituicaoController {
 
     async consultarPorId(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, {
-                useNewUrlParser: true
-            });
 
             const query = Instituicao.findById(req.params.id);
 
@@ -79,8 +68,6 @@ class InstituicaoController {
 
     excluir(req, res) {
         try {
-            mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
-            
             if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR && req.idInstituicao !== req.params.id) {
                 res.status(401).json({message: mensagens.ERRO_EXCLUIR_INSTITUICAO_DIFERENTE_REGISTRO});
             }
