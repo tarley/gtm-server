@@ -87,9 +87,13 @@ class UsuarioController {
                     query.where('perfil', perfilUsuario.ACADEMICO);
             }
 
-            const usuarios = await query.exec();
+            let usuarios = await query.exec();
+
+            usuarios = UsuarioController.limpaSenhaUsuarios(usuarios);
+
             res.json(usuarios);
         } catch (err) {
+            console.log(err);
             res.status(500).json(err);
         }
     }
@@ -97,19 +101,33 @@ class UsuarioController {
     async consultarPorId(req, res) {
         try {
             const query = Usuario.findById(req.params.id);
-            const usuario = await query.exec();
+            let usuario = await query.exec();
 
             if (usuario) {
                 if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR && usuario.idInstituicao !== req.idInstituicao) {
                     res.status(401).json({message: mensagens.ERRO_CONSULTAR_OUTRA_INSTITUICAO});
                 }
+                usuario = UsuarioController.limpaSenhaUsuarios(usuario);
                 res.json(usuario);
             }
             else
                 res.status(404).json({ errors: [{ msg: mensagens.USUARIO_NAO_ENCONTRADO }] });
         } catch (err) {
+            console.log(err);
             res.status(500).json(err);
         }
+    }
+
+    static limpaSenhaUsuarios(usuarios) {
+        if(Array.isArray(usuarios)) {
+            for(let usuario of usuarios) {
+                usuario.senha = null;
+            }
+        } else {
+            usuarios.senha = null
+        }
+        
+        return usuarios;
     }
 
     consultarPerfis(req, res) {
