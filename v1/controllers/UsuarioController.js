@@ -84,6 +84,11 @@ class UsuarioController {
 
             if(req.perfilUsuario !== perfilUsuario.ADMINISTRADOR) {
                 query.where('idInstituicao', req.idInstituicao);
+                
+                if(req.perfilUsuario === perfilUsuario.GESTOR_INSTITUICAO)
+                    query.where('perfil').in([perfilUsuario.PROFISSIONAL_SAUDE, perfilUsuario.ACADEMICO]);
+                else if(req.perfilUsuario === perfilUsuario.PROFISSIONAL_SAUDE)
+                    query.where('perfil', perfilUsuario.ACADEMICO);
             }
 
             const usuarios = await query.exec();
