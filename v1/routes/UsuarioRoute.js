@@ -24,7 +24,7 @@ router.route('/perfis')
         .get(controller.verificarToken, controller.validarPerfilProfissionalSaude, controller.consultarPerfis)
 
 router.route('/:id')
-    .get(controller.verificarToken, controller.validarPerfilProfissionalSaude,  controller.consultarPorId)
+    .get(controller.verificarToken,  controller.consultarPorId)
     .delete(controller.verificarToken, controller.validarPerfilProfissionalSaude, controller.excluir)
     .put(
         [
