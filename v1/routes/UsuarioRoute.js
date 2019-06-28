@@ -45,4 +45,14 @@ router.route('/login')
             controller.login
         );
 
+router.route('/:id/redefinirSenha')
+        .put(
+            [
+                check('senhaAntiga', mensagens.TAM_MIN_SENHA_USUARIO).isLength({ min: 5 }),
+                check('novaSenha', mensagens.TAM_MIN_SENHA_USUARIO).isLength({ min: 5 }),
+                check('confNovaSenha', mensagens.TAM_MIN_SENHA_USUARIO).isLength({ min: 5 })
+            ],
+            controller.verificarToken, controller.redefinirSenha
+        )
+
 exports.default = router;

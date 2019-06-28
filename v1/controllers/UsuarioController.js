@@ -62,7 +62,7 @@ class UsuarioController {
 
             if (usuario) {
                 var token = jwt.sign({ id: usuario._id, perfil: usuario.perfil, nome: usuario.nome, idInstituicao: usuario.idInstituicao }, process.env.SECRET, {
-                    expiresIn: 60 * 60 * 24 // expira em 15 minutos
+                    expiresIn: 60 * 60 * 24
                 });
 
                 res.status(200).send({ auth: true, token: token });
@@ -70,6 +70,40 @@ class UsuarioController {
                 res.status(500).send({ auth: false, msg: mensagens.LOGIN_INVALIDO });
             }
         } catch (err) {
+            res.status(500).json(err);
+        }
+    }
+
+    async redefinirSenha(req, res) {
+        try {
+            const erros = validationResult(req);
+
+            if(!erros.isEmpty())
+                return res.status(422).json({ errors: erros.array() });
+            
+            if(req.body.novaSenha !== req.body.confNovaSenha) {
+                res.status(422).json({ errors: [{ msg: mensagens.USUARIO_SENHA_CONFIRMACAO_DIFERENTE }] });
+                return;
+            }
+
+            const usuario = await Usuario.findOne({ _id: mongoose.Types.ObjectId(req.params.id) });
+
+            if(usuario) {
+                if(usuario.senha !== req.body.senhaAntiga) {
+                    res.status(422).json({ errors: [{ msg: mensagens.USUARIO_SENHA_ANTIGA_DIFERENTE }] });
+                    return;
+                }
+                
+                await Usuario.updateOne({_id: mongoose.Types.ObjectId(req.params.id)}, {senha: req.body.novaSenha});
+                res.json({msg: mensagens.USUARIO_SENHA_REDEFINIDA})
+
+            } else {
+                res.status(404).json({ errors: [{ msg: mensagens.USUARIO_NAO_ENCONTRADO }] });
+                return;
+            }
+
+        } catch(err) {
+            console.log(err);
             res.status(500).json(err);
         }
     }

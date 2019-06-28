@@ -13,6 +13,9 @@ module.exports = {
     USUARIO_NAO_ENCONTRADO: 'Usuário não encontrado!',
     USUARIO_JA_INATIVO: 'Usuário já esta inativo.',
     USUARIO_INSTITUICAO_OBRIGATORIO: 'A instituição deve ser informada!',
+    USUARIO_SENHA_ANTIGA_DIFERENTE: 'A senha antiga está incorreta.',
+    USUARIO_SENHA_CONFIRMACAO_DIFERENTE: 'Senha e Confirmação de Senha não correspondem.',
+    USUARIO_SENHA_REDEFINIDA: 'Senha redefinida com sucesso.',
 
     //Mensagens Paciente
     PACIENTE_NAO_ENCONTRADO: 'Paciente não encontrado!',
