@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const Usuario = require('../models/Usuario');
 const mensagens = require('../utils/Mensagens');
 const perfilUsuario = require('../utils/PerfilUsuario');
+const bcrypt = require('bcrypt');
 
 class UsuarioController {
 
@@ -56,11 +57,10 @@ class UsuarioController {
             if (!erros.isEmpty())
                 return res.status(422).json({ errors: erros.array() });
 
-            // TODO Tarley A senha está em texto plano no banco, devemos mudar para uma criptografia hash
-            const query = Usuario.findOne({ email: req.body.email, senha: req.body.senha, inativo: false });
+            const query = Usuario.findOne({ email: req.body.email, inativo: false });
             const usuario = await query.exec();
 
-            if (usuario) {
+            if (usuario && await UsuarioController.isSenhaValida(usuario.senha, req.body.senha)) {
                 var token = jwt.sign({ id: usuario._id, perfil: usuario.perfil, nome: usuario.nome, idInstituicao: usuario.idInstituicao }, process.env.SECRET, {
                     expiresIn: 60 * 60 * 24
                 });
@@ -87,14 +87,14 @@ class UsuarioController {
             }
 
             const usuario = await Usuario.findOne({ _id: mongoose.Types.ObjectId(req.params.id) });
-
+            
             if(usuario) {
-                if(usuario.senha !== req.body.senhaAntiga) {
+                if(!await UsuarioController.isSenhaValida(usuario.senha, req.body.senhaAntiga)) {
                     res.status(422).json({ errors: [{ msg: mensagens.USUARIO_SENHA_ANTIGA_DIFERENTE }] });
                     return;
                 }
                 
-                await Usuario.updateOne({_id: mongoose.Types.ObjectId(req.params.id)}, {senha: req.body.novaSenha});
+                await Usuario.updateOne({_id: mongoose.Types.ObjectId(req.params.id)}, {senha: await UsuarioController.criptografadaSenha(req.body.novaSenha) });
                 res.json({msg: mensagens.USUARIO_SENHA_REDEFINIDA})
 
             } else {
@@ -178,7 +178,6 @@ class UsuarioController {
             const query = Usuario.findOne({ email: req.body.email });
             const user = await query.exec();
 
-            // TODO Tarley A senha está em texto plano no banco, devemos mudar para uma criptografia hash
             if (user && user.inativo == true) {
                 const result = await Usuario.updateOne(
                     {
@@ -186,7 +185,7 @@ class UsuarioController {
                     },
                     {
                         nome: req.body.nome,
-                        senha: req.body.senha,
+                        senha: await UsuarioController.criptografadaSenha(req.body.senha),
                         perfil: req.body.perfil,
                         inativo: false,
                         alteradoPor: req.idUsuario,
@@ -202,6 +201,7 @@ class UsuarioController {
             } else {
                 let newUsuario = new Usuario({
                     ...req.body,
+                    senha: await UsuarioController.criptografadaSenha(req.body.senha),
                     criadoPor: req.idUsuario,
                     criadoEm: new Date(),
                 })
@@ -272,6 +272,7 @@ class UsuarioController {
                 alteradoPor: req.idUsuario,
                 alteradoEm: new Date()
             }
+            delete usuario.senha;
             const result = await Usuario.updateOne({ _id: id }, usuario);
 
             if (result.n == 0)
@@ -282,6 +283,14 @@ class UsuarioController {
             console.log(err);
             res.status(500).json(err);
         }
+    }
+
+    static async criptografadaSenha(senha) {
+        return await bcrypt.hash(senha, 10);
+    }
+
+    static async isSenhaValida(senhaBanco, senha) {
+        return await bcrypt.compare(senha, senhaBanco);
     }
 
     validarPerfil(value) {
